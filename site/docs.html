@@ -1,0 +1,323 @@
+<html>
+    <head>
+        <title>ZT API Documentation</title>
+        <meta property="og:site_name" content="Zone Telechargement API">
+        <meta property="og:title" content="ZT API Documentation">
+        <meta name="theme-color" content="#586DF2">
+        <link rel="stylesheet" href="/assets/css/documentation.css">
+    </head>
+
+    <body>
+        <div style="display: flex; height: 100%;">
+            <div class="pagebar">
+                <div class="pagebar_title">DOCUMENTATION</div>
+                <div class="separator"></div>
+                <div class="pages">
+                    <div class="actualManaged">
+                        <div class="page actualPage" onclick="selectMenu(this,'informations')">Informations</div>
+                        <div class="subpages">
+                            <div class="subpage actualSubpage" onclick="selectSubmenu(this,'informations_introduction')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Introduction</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'informations_why')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Why this API</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'informations_howToUse')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>How to Use it</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'informations_getAccess')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Get early access</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page" onclick="selectMenu(this,'changelogs')">Changelogs</div>
+                        <div class="subpages">
+                            <div class="subpage" onclick="selectSubmenu(this,'changelogs_version_last')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Last 1.0.0</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'changelogs_version_0_0_0')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>0.0.0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page" onclick="selectMenu(this,'getstarted')">Get started</div>
+                        <div class="subpages">
+                            <div class="subpage" onclick="selectSubmenu(this,'getstarted_structure')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Structure</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'getstarted_simple_search_query')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Simple search query</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'getstarted_post')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Post Page Setting</div>
+                            </div>
+                            <div class="subpage" onclick="selectSubmenu(this,'getstarted_put')">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Put Page Setting</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page" onclick="selectMenu(this,'')">Page 2</div>
+                        <div class="subpages">
+                            <div class="subpage" href="#settings_structure`">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Settings Structure</div>
+                            </div>
+                            <div class="subpage"href="#get_page_setting">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Get Page Setting</div>
+                            </div>
+                            <div class="subpage" href="#post_page_setting">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Post Page Setting</div>
+                            </div>
+                            <div class="subpage" href="#put_page_setting">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Put Page Setting</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="page" onclick="selectMenu(this,'')">Page 3</div>
+                        <div class="subpages">
+                            <div class="subpage" href="#settingspage_structure">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Settings Structure</div>
+                            </div>
+                            <div class="subpage" href="#settingspage_get">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Get Page Setting</div>
+                            </div>
+                            <div class="subpage" href="#settingspage_post">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Post Page Setting</div>
+                            </div>
+                            <div class="subpage" href="#settingspage_put">
+                                <svg version="1.2" class="arrowSubpage" fill="#ffffff" viewBox="0 0 281 445" width="7.5" height="7.5"><path  d="m58.2 0q15.1 0 25.7 10.6l185.8 185.8q10.9 10.9 10.9 26 0 15.4-10.9 25.7l-185.8 185.9q-10.3 10.8-25.7 10.8-15.1 0-26-10.8l-21.4-21.2q-10.6-11.1-10.6-25.9 0-15.2 10.6-25.7l138.7-138.8-138.7-138.7q-10.6-10.6-10.6-25.7 0-14.9 10.6-26l21.4-21.4q11.1-10.6 26-10.6z"/></svg>
+                                <div>Put Page Setting</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="screen" class="screen">
+
+                <div class="__no_page__">
+                    <div class="title">Unknown page</div>
+                    <div class="description">This menu is probably broken</div>
+
+                </div>
+                <div id="informations">
+
+                    <div class="title">Informations</div>
+                    <div class="object">
+                        <div class="object_title" id="informations_introduction">Introduction</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">The Discord ZT API was created on August 10, 2022 (the first version was usable on 08/20/2022).</div>
+                    <div class="description">The purpose of this API is to allow third-party applications to easily retrieve information from the Zone-telechargement site without having to do scraping.</div>
+                    <br><br>
+                    <div class="object">
+                        <div class="object_title" id="informations_why">Why this API ?</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">The purpose of this API is to allow third-party applications to easily retrieve information from the Zone-telechargement site without having to do scraping.</div>
+                    <br>
+
+                    <div class="object">
+                        <div class="object_title" id="informations_howToUse">How to use it ?</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">Its really simple. With your API token you make a request to our API asking what do you want, its entierely customizable..</div>
+
+                    <br>
+
+                    <div class="object">
+                        <div class="object_title"id="informations_getAccess">Get early access</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">Unfortunatly the API is still in a pre-beta version, meaning that its not public.</div>
+                    <!-- <div class="description">However, you can request @Sylicium on the <span class="hyperlink" onclick='openp("https://discord.gg/dVNjucgkwt")'>Discord Bot Settings API official Discord</span> to get the access to the beta.</div>-->
+                    <div class="description">But keep in mind that if you're using this API in pre-beta / beta / alpha / canary and any other unstable versions, you'll have to often check our documention to see if there is no modifications.</div>
+                    <div class="description">You can find the versions changelogs in the left-side menu.</div>
+
+
+
+                    
+
+                </div> <!-- informations -->
+
+
+                <div id="changelogs">
+
+                    <div class="title" id="changelogs_version_last">Last version 1.0.0</div>
+                    <div class="description">The creation of the first version of the API, adding one endpoint.</div>
+                    <div class="object" id="changelogs_version_last">
+                        <div class="object_title">Additions</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">POST</span>
+                            <span class="endpointUrl"> /api/search</span>
+                        </div>
+                    </div>
+                    <div class="description">Endpoint to search movies</div>
+                    <br>
+                    <div class="title" id="changelogs_version_last">Version 0.0.0</div>
+                    <div class="object" id="changelogs_version_0_0_0">
+                        <div class="object_title">Additions</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">None. The idea of this API.</div>
+                    <br>
+
+                </div> <!-- changelogs -->
+
+
+                <div id="getstarted">
+
+                    <div class="title">Settings Page</div>
+                    <div class="object" id="getstarted_structure">
+                        <div class="object_title">Settings Structure</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div class="description">Endpoint to create the setting pages.</div>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">POST</span>
+                            <span class="endpointUrl"> /api/createPageSetting</span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="object_title">Body Params</div>
+                    <div class="grid">
+                        <div class="grid_title">FIELD</div><div class="grid_title">TYPE</div><div class="grid_title">DESCRIPTION</div>
+                        <div class="grid_separator"></div>
+                        <div class="grid_row">pageName</div><div class="grid_row">string</div><div class="grid_row">The name of the setting page (your application name in general)</div>
+                        <div class="grid_row2">?pageDescription</div><div class="grid_row2">string</div><div class="grid_row2">The name of the setting page (your application name in general)</div>
+                        <div class="grid_row">backToEndpointToken*</div><div class="grid_row">string</div><div class="grid_row">The Token of the endpoint to send back the response</div>
+                        <div class="grid_row2">backToEndpointUrl</div><div class="grid_row2">string</div><div class="grid_row2">The URL to send back the response (PUT method, see <span class="hyperlink" href="gettheresponse_requestbydbsapi">reponse DBS API request format</span>)</div>
+                        <div class="grid_row">settingsWaterfall</div><div class="grid_row">array</div><div class="grid_row">The waterfall of settings. see <span class="hyperlink" href="waterfallsettings_settings">waterfall settings list</span>.</div>
+                        <div class="grid_row2">?oneUse*</div><div class="grid_row2">boolean</div><div class="grid_row2">If the page will expires once it is used.</div>
+                        <div class="grid_row">?backBody</div><div class="grid_row">object</div><div class="grid_row">The body which will be sent back to your application without being modified.</div>
+                    </div>
+                    <div class="description">?param means that the parameter is optional</div>
+                    <div class="description">* In the version 1.0.0, this param does not yet have an utility, juste set the field the any string, it wont matter.</div>
+                    <div class="description">** In the version 1.0.0, this param is required to be true.</div>
+                    </br>
+                    <div class="object" id="getstarted_simple_search_query">
+                        <div class="object_title">Simple search query</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">GET</span>
+                            <span class="endpointUrl"> /api/search</span>
+                        </div>
+                    </div>
+                    <div class="description">Une description juste pour rien dire</div>
+                    </br>
+                    <div class="object" id="getstarted_post">
+                        <div class="object_title">Post Page Setting</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">POST</span>
+                            <span class="endpointUrl"> /api/createPageSetting</span>
+                        </div>
+                    </div>
+                    <div class="description">Une description juste pour rien dire</div>
+                    </br>
+                    <div class="object" id="getstarted_put">
+                        <div class="object_title">Put Page Setting</div>
+                        <div class="object_icon">
+                            <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">PUT</span>
+                            <span class="endpointUrl"> /api/createPageSetting</span>
+                        </div>
+                    </div>
+                    <div class="description">Une description juste pour rien dire</div>
+                    </br>
+                    <div class="code">
+                        <div class="code_header"></div>
+                        <div class="code_line">1</div><div class="code_text"><span style="color: #859900;">const</span> { <span style="color: #268bd2;">Client</span>, <span style="color: #268bd2;">Intents</span> } = <span style="color: #dc322f;">require</span>(<span style="color: #2aa198;">'discord.js'</span>);</div>
+                        <div class="code_line">2</div><div class="code_text"><span style="color: #859900;">const</span> client = <span style="color: #859900;">new</span> <span style="color: #268bd2;">Client</span>({ <span style="color: #b58900;">intents</span>: [<span style="color: #268bd2;">Intents</span>.FLAGS.GUILDS] });</div>
+                        <div class="code_line">3</div><div class="code_text"></div>
+                        <div class="code_line">4</div><div class="code_text">client.<span style="color: #268bd2;">on</span>(<span style="color: #2aa198;">'ready'</span>, () => {</div>
+                        <div class="code_line">5</div><div class="code_text" style="margin-left: 15px"><span style="color: #b58900;">console</span>.<span style="color: #268bd2;">log</span>(<span style="color: #2aa198;">`Logged in as <span style="color: #cb4b16;">${client.user.tag}</span>!`</span>);</div>
+                        <div class="code_line">6</div><div class="code_text">});</div>
+                        <div class="code_line">7</div><div class="code_text"></div>
+                        <div class="code_line">8</div><div class="code_text">client.<span style="color: #268bd2;">on</span>(<span style="color: #2aa198;">'interactionCreate'</span>, <span style="color: #859900;">async</span> interaction => {</div>
+                        <div class="code_line">9</div><div class="code_text" style="margin-left: 15px"><span style="color: #859900;">if</span> (!interaction.<span style="color: #268bd2;">isCommand</span>()) <span style="color: #859900;">return;</span></div>
+                        <div class="code_line">10</div><div class="code_text" style="margin-left: 15px"></div>
+                        <div class="code_line">11</div><div class="code_text" style="margin-left: 15px"><span style="color: #859900;">if</span> (interaction.commandName === <span style="color: #2aa198;">'ping'</span>) {</div>
+                        <div class="code_line">12</div><div class="code_text" style="margin-left: 25px"><span style="color: #859900;">await</span> interaction.<span style="color: #268bd2;">reply</span>(<span style="color: #2aa198;">'Pong!'</span>);</div>
+                        <div class="code_line">13</div><div class="code_text" style="margin-left: 15px">}</div>
+                        <div class="code_line">14</div><div class="code_text">});</div>
+                        <div class="code_line">15</div><div class="code_text"></div>
+                        <div class="code_line">16</div><div class="code_text">client.<span style="color: #268bd2;">login</span>(<span style="color: #2aa198;">'token'</span>);</div>
+                    </div>
+                </br>
+                    <div class="code">
+                        <div class="code_header"></div>
+                        <div class="code_line">1</div><div class="code_text"><span style="color: #859900;">const</span> { <span style="color: #268bd2;">Client</span>, <span style="color: #268bd2;">Intents</span> } = <span style="color: #dc322f;">require</span>(<span style="color: #2aa198;">'discord.js'</span>);</div>
+                        <div class="code_line">2</div><div class="code_text"><span style="color: #859900;">const</span> client = <span style="color: #859900;">new</span> <span style="color: #268bd2;">Client</span>({ <span style="color: #b58900;">intents</span>: [<span style="color: #268bd2;">Intents</span>.FLAGS.GUILDS] });</div>
+                        <div class="code_line">3</div><div class="code_text"></div>
+                        <div class="code_line">4</div><div class="code_text">client.<span style="color: #268bd2;">on</span>(<span style="color: #2aa198;">'ready'</span>, () => {</div>
+                        <div class="code_line">5</div><div class="code_text" style="margin-left: 15px"><span style="color: #b58900;">console</span>.<span style="color: #268bd2;">log</span>(<span style="color: #2aa198;">`Logged in as <span style="color: #cb4b16;">${client.user.tag}</span>!`</span>);</div>
+                        <div class="code_line">6</div><div class="code_text">});</div>
+                        <div class="code_line">7</div><div class="code_text"></div>
+                        <div class="code_line">8</div><div class="code_text">client.<span style="color: #268bd2;">on</span>(<span style="color: #2aa198;">'interactionCreate'</span>, <span style="color: #859900;">async</span> interaction => {</div>
+                        <div class="code_line">9</div><div class="code_text" style="margin-left: 15px"><span style="color: #859900;">if</span> (!interaction.<span style="color: #268bd2;">isCommand</span>()) <span style="color: #859900;">return;</span></div>
+                        <div class="code_line">10</div><div class="code_text" style="margin-left: 15px"></div>
+                        <div class="code_line">11</div><div class="code_text" style="margin-left: 15px"><span style="color: #859900;">if</span> (interaction.commandName === <span style="color: #2aa198;">'ping'</span>) {</div>
+                        <div class="code_line">12</div><div class="code_text" style="margin-left: 25px"><span style="color: #859900;">await</span> interaction.<span style="color: #268bd2;">reply</span>(<span style="color: #2aa198;">'Pong!'</span>);</div>
+                        <div class="code_line">13</div><div class="code_text" style="margin-left: 15px">}</div>
+                        <div class="code_line">14</div><div class="code_text">});</div>
+                        <div class="code_line">15</div><div class="code_text"></div>
+                        <div class="code_line">16</div><div class="code_text">client.<span style="color: #268bd2;">login</span>(<span style="color: #2aa198;">'token'</span>);</div>
+                    </div>
+
+                </div> <!-- fin settingspage -->
+
+            </div>
+        </div>
+        <script src="/assets/js/documentation.js"></script>
+    </body>
+</html>

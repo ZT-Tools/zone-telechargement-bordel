@@ -1,2 +1,10 @@
 # zone-telechargement-api
  An API for zone-telechargement built from Scratch
+
+# Contact
+If you are from the government or if you for any reason want to close this API, you can contact me by opening a new issue and describing that you want to contact me privately for such and such reasons.
+I'm french by the way.
+
+# How to use
+For now, endpoint is at https://dev--test-api--sylicium.api.stdlib.com/
+To know more details on how to use, please refer to the documentation.

@@ -18,11 +18,14 @@ app.use(express.json())
 const serv = require('http').createServer(app);
 const io = require('socket.io')(serv);
 
+let ztParser = require("./localModules/ztParser")
+
 const Modules_ = {
     "Discord": Discord,
     "app": app,
     "config": config,
-    "axios": axios
+    "axios": axios,
+    "ztParser": ztParser
 }
 
 let servEndpoints = {
@@ -88,10 +91,15 @@ module.exports.run = (instance_client) => {
     
     app.all("*", async (req, res) => { // tout à la fin sinon le "*" catch à la place des autres app.get()
 
+
+        if(req.path.startsWith("/assets/")) { return res.sendFile(`${__dirname}${servEndpoints.site.relative}${req.path}`) }
+        if(req.path.startsWith("/api/")) {
+            handleAPI(req, res)
+            return;
+        }
+
         try {
             
-            if(req.path.startsWith("/assets/")) { return res.sendFile(`${__dirname}${servEndpoints.site.relative}${req.path}`) }
-            if(req.path.startsWith("/api/")) { return handleAPI(req, res) }
 
             console.log(`[Web] ${req.method.toUpperCase()} -> ${req.url}`)
             // console.log(req.query)
@@ -110,7 +118,7 @@ module.exports.run = (instance_client) => {
 
         } catch(err) {
             res.status(500)
-            res.send(JSON.stringify({
+            return res.send(JSON.stringify({
                 message: `An error occured server-side. ${err}`,
                 stack: err.stack.split("\n"),
             }))
@@ -127,7 +135,8 @@ module.exports.run = (instance_client) => {
 
 
 function handleAPI(req, res) {
-    console.log("got api",req.url)
+    
+    // console.log("got api",req.url)
         
     let endpoint = req.path.substr(5, req.path.length)
 
@@ -156,6 +165,8 @@ function handleAPI(req, res) {
 
     let apiEvent = apiEvent_list2[0]
 
+    /*
+    // Parse JSON in query parameters 
     for(let paramName in req.query) {
         let paramValue = req.query[paramName]
         try {
@@ -169,7 +180,7 @@ function handleAPI(req, res) {
                 stack: e.stack.split("\n")
             })
         }
-    }
+    }*/
 
     for(let i in apiEvent.parameters) {
         let param = apiEvent.parameters[i]
@@ -209,7 +220,13 @@ function handleAPI(req, res) {
     }
 
     try {
-        apiEvent.func(Client, Modules_, req, res).catch(err => {
+        /*
+        TypeError: apiEvent.func(...).then is not a function ----->> /api/method/endpoint.func must be async function
+        */
+        apiEvent.func(Client, Modules_, req, res).then(JSONResponse => {
+            return res.send(JSONResponse)
+        }).catch(err => {
+            console.log(err)
             return res.send({
                 status: 500,
                 message: `Internal server error while executing request.`,
@@ -218,6 +235,7 @@ function handleAPI(req, res) {
             })
         })
     } catch(err) {
+        console.log(err)
         return res.send({
             status: 500,
             message: `Internal server error while executing request.`,

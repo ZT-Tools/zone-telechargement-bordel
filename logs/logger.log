@@ -122,3 +122,44 @@ File created on 23/07/2023 at 22:52:06.409
 [23/07/2023 - 23:47:32.798 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
 [23/07/2023 - 23:49:10.597 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
 [24/07/2023 - 01:39:59.535 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 03:38:00.934 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:14:37.913 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:14:38.046 ERROR] (<root>zone-telechargement-api\server.js:164:20): SyntaxError: Unexpected token à in JSON at position 1
+[24/07/2023 - 23:14:43.316 ERROR] (<root>zone-telechargement-api\server.js:164:20): SyntaxError: Unexpected token à in JSON at position 1
+[24/07/2023 - 23:14:45.193 ERROR] (<root>zone-telechargement-api\server.js:164:20): SyntaxError: Unexpected token e in JSON at position 0
+[24/07/2023 - 23:16:09.832 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:17:40.989 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:19:36.459 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:21:32.585 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:22:02.568 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:22:53.173 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:23:14.404 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:23:42.006 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:24:12.015 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:24:46.584 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:25:49.808 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:26:10.769 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:27:40.678 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:27:55.008 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:28:36.836 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:30:07.923 ERROR] (<root>zone-telechargement-api\server.js:178:20): SyntaxError: Unexpected token e in JSON at position 0
+[24/07/2023 - 23:30:43.330 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:31:44.719 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:32:28.240 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:33:27.972 ERROR] (<root>zone-telechargement-api\server.js:170:20): SyntaxError: Unexpected token i in JSON at position 1
+[24/07/2023 - 23:35:59.539 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:36:11.895 ERROR] (<root>zone-telechargement-api\server.js:173:20): SyntaxError: Unexpected token i in JSON at position 1
+[24/07/2023 - 23:36:59.947 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:38:53.059 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:39:18.317 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:40:36.815 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:41:30.172 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:42:01.397 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:42:31.313 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:43:18.971 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:44:10.473 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:46:01.037 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:47:53.816 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:48:13.451 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[24/07/2023 - 23:59:19.670 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 00:14:57.524 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping

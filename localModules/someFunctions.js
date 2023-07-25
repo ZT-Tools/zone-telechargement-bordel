@@ -1,6 +1,6 @@
 
 /**
- * @version 2.0.1 // 23/07/2023
+ * @version 2.0.2 // 23/07/2023
  * @author Sylicium
  * @description Module someFunction qui réunit plein de fonction utiles
  *
@@ -117,6 +117,24 @@ function any(list, list_two, caseSensitive=true) {
     }
     for(let i in list) {
         if(list_two.indexOf(list[i]) != -1) return true
+    }
+    return false
+}
+
+module.exports.anyWordInText = anyWordInText
+/**
+ * f() : Retourne true si au moins 1 élément se trouve dans le texte
+ * @param {String} text - Le texte
+ * @param {Array} list - La liste
+ * @param {Boolean} caseSensitive - Prendre en compte ou non la casse. Default: true
+ */
+function anyWordInText(text, list, caseSensitive=true) {
+    if(!caseSensitive) {
+        list = list.map(f=>{ return f.toLowerCase(); });
+        text = text.toLowerCase()
+    }
+    for(let i in list) {
+        if(text.indexOf(list[i]) != -1) return true
     }
     return false
 }

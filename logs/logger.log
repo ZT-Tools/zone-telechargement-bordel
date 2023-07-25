@@ -163,3 +163,34 @@ File created on 23/07/2023 at 22:52:06.409
 [24/07/2023 - 23:48:13.451 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
 [24/07/2023 - 23:59:19.670 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
 [25/07/2023 - 00:14:57.524 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 12:53:15.968 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 12:55:41.225 INFO] (<root>zone-telechargement-api\server.js:57:8): [API] Loading APIEvents...
+[25/07/2023 - 12:55:41.228 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method GET
+[25/07/2023 - 12:55:41.235 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /search
+[25/07/2023 - 12:55:41.240 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /test
+[25/07/2023 - 12:55:41.242 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method POST
+[25/07/2023 - 12:55:41.246 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (POST) /sendmessage
+[25/07/2023 - 12:55:41.247 INFO] (<root>zone-telechargement-api\server.js:81:8): [API] ✅ Loaded 3 APIEvents,[object Object],[object Object],[object Object]
+[25/07/2023 - 12:55:41.270 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 12:55:41.275 INFO] (<root>zone-telechargement-api\server.js:130:16): [server.js] Serveur démarré sur le port 8080
+[25/07/2023 - 12:56:10.874 DEBUG] (<root>zone-telechargement-api\server.js:104:20): [Web] GET -> /favicon.ico
+[25/07/2023 - 12:56:18.241 DEBUG] (<root>zone-telechargement-api\server.js:104:20): [Web] GET -> /favicon.ico
+[25/07/2023 - 12:57:51.144 INFO] (<root>zone-telechargement-api\server.js:57:8): [API] Loading APIEvents...
+[25/07/2023 - 12:57:51.150 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method GET
+[25/07/2023 - 12:57:51.155 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /search
+[25/07/2023 - 12:57:51.162 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /test
+[25/07/2023 - 12:57:51.164 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method POST
+[25/07/2023 - 12:57:51.170 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (POST) /sendmessage
+[25/07/2023 - 12:57:51.171 INFO] (<root>zone-telechargement-api\server.js:81:8): [API] ✅ Loaded 3 APIEvents,[object Object],[object Object],[object Object]
+[25/07/2023 - 12:57:51.185 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 12:57:51.189 INFO] (<root>zone-telechargement-api\server.js:130:16): [server.js] Serveur démarré sur le port 8080
+[25/07/2023 - 12:59:01.736 INFO] (<root>zone-telechargement-api\server.js:57:8): [API] Loading APIEvents...
+[25/07/2023 - 12:59:01.740 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method GET
+[25/07/2023 - 12:59:01.743 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /search
+[25/07/2023 - 12:59:01.745 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (GET) /test
+[25/07/2023 - 12:59:01.751 INFO] (<root>zone-telechargement-api\server.js:62:20): [API]   Loading api endpoints for method POST
+[25/07/2023 - 12:59:01.758 INFO] (<root>zone-telechargement-api\server.js:71:24): [API]     ✔ Loaded API endpoint (POST) /sendmessage
+[25/07/2023 - 12:59:01.759 INFO] (<root>zone-telechargement-api\server.js:81:8): [API] ✅ Loaded 3 APIEvents,[object Object],[object Object],[object Object]
+[25/07/2023 - 12:59:01.785 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[25/07/2023 - 12:59:01.789 INFO] (<root>zone-telechargement-api\server.js:130:16): [server.js] Serveur démarré sur le port 8080
+[25/07/2023 - 12:59:04.126 DEBUG] (<root>zone-telechargement-api\server.js:104:20): [Web] GET -> /favicon.ico

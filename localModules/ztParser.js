@@ -49,7 +49,10 @@ class ZoneTelechargementParser {
             let movieList_elements = [...document.getElementById("dle-content").childNodes].filter(x => { return x.getAttribute("class") == "cover_global" })
 
 
+
             let responseMovieList = []
+
+            if(movieList_elements.length == 0) { return responseMovieList }
 
             for(let i in movieList_elements) {
                 let elem = movieList_elements[i]
@@ -85,6 +88,7 @@ class ZoneTelechargementParser {
             return responseMovieList
         
         } catch(e) {
+            console.log(e)
             return {
                 status: false,
                 error: `${e}`,

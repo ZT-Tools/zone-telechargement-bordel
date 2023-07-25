@@ -54,12 +54,12 @@ boolean - true/false
 let APIEvents = [
 ]
 
-console.log(`[API] Loading APIEvents...`)
+Logger.info(`[API] Loading APIEvents...`)
 fs.readdirSync(`.${servEndpoints.api.fs}/`).forEach(directoryName => {
     let dirPath = `.${servEndpoints.api.fs}/${directoryName}`
     try {
         if( fs.existsSync(dirPath) && fs.lstatSync(dirPath).isDirectory() ) {
-            console.log(`[API]   Loading api endpoints for method ${directoryName.toUpperCase()}`)
+            Logger.info(`[API]   Loading api endpoints for method ${directoryName.toUpperCase()}`)
             fs.readdirSync(`.${servEndpoints.api.fs}/${directoryName}/`).forEach(file => {
                 let the_require = require(`.${servEndpoints.api.relative}/${directoryName}/${file}`)
                 the_require.method = directoryName.toUpperCase()
@@ -68,17 +68,17 @@ fs.readdirSync(`.${servEndpoints.api.fs}/`).forEach(directoryName => {
                 fileName = fileName.join(".")
                 the_require.endpoint = fileName
                 APIEvents.push(the_require)
-                console.log(`[API]     ✔ Loaded API endpoint (${the_require.method}) /${the_require.endpoint}`)
+                Logger.info(`[API]     ✔ Loaded API endpoint (${the_require.method}) /${the_require.endpoint}`)
             })
         } else {
-            console.log(`[API]   ! ${directoryName} is a file, not a directory`)
+            Logger.warn(`[API]   ! ${directoryName} is a file, not a directory`)
         }
     } catch(e) {
-        console.log(`[API][ERROR] ❌`,e)
+        Logger.error(`[API][ERROR] ❌`,e)
     }
 
 })
-console.log(`[API] ✅ Loaded ${APIEvents.length} APIEvents`,APIEvents)
+Logger.info(`[API] ✅ Loaded ${APIEvents.length} APIEvents`,APIEvents)
 
 
 module.exports.run = (instance_client) => {
@@ -101,7 +101,7 @@ module.exports.run = (instance_client) => {
         try {
             
 
-            console.log(`[Web] ${req.method.toUpperCase()} -> ${req.url}`)
+            Logger.debug(`[Web] ${req.method.toUpperCase()} -> ${req.url}`)
             // console.log(req.query)
     
             if(req.path == "/favicon.ico") return res.sendFile(`${__dirname}${servEndpoints.site.relative}/favicon.ico`)
@@ -127,7 +127,7 @@ module.exports.run = (instance_client) => {
     })
 
     serv.listen(config.website.port, () => {
-        console.log(`[server.js] Serveur démarré sur le port ${config.website.port}`)
+        Logger.info(`[server.js] Serveur démarré sur le port ${config.website.port}`)
     })
 
 }
@@ -136,7 +136,7 @@ module.exports.run = (instance_client) => {
 
 function handleAPI(req, res) {
     
-    // console.log("got api",req.url)
+    // Logger.debug("got api",req.url)
         
     let endpoint = req.path.substr(5, req.path.length)
 
@@ -226,7 +226,7 @@ function handleAPI(req, res) {
         apiEvent.func(Client, Modules_, req, res).then(JSONResponse => {
             return res.send(JSONResponse)
         }).catch(err => {
-            console.log(err)
+            Logger.error(err)
             return res.send({
                 status: 500,
                 message: `Internal server error while executing request.`,
@@ -235,7 +235,7 @@ function handleAPI(req, res) {
             })
         })
     } catch(err) {
-        console.log(err)
+        Logger.error(err)
         return res.send({
             status: 500,
             message: `Internal server error while executing request.`,
@@ -248,10 +248,10 @@ function handleAPI(req, res) {
 
 io.on('connection', socket => {
 
-    console.log(`[socket][+] New connection: ${socket.id}`)
+    Logger.info(`[socket][+] New connection: ${socket.id}`)
 
     io.on('disconnect', socket => {
-        console.log(`[socket][-] Lost connection: ${socket.id}`)
+        Logger.info(`[socket][-] Lost connection: ${socket.id}`)
     })
 
 })

@@ -10,11 +10,20 @@ const fs = require("fs")
 let config = require("./config")
 
 const express = require('express');
+const { queryParser } = require('express-query-parser')
+const bodyParser = require('body-parser');
 const Discord = require("discord.js");
 const Logger = require("./localModules/logger")();
 const app = express();
 app.use(express.urlencoded())
 app.use(express.json())
+app.use(queryParser({
+    parseNull: true,
+    parseUndefined: true,
+    parseBoolean: true,
+    parseNumber: true,
+}))
+app.use(bodyParser.json());
 const serv = require('http').createServer(app);
 const io = require('socket.io')(serv);
 
@@ -137,7 +146,7 @@ module.exports.run = (instance_client) => {
 function handleAPI(req, res) {
     
     // Logger.debug("got api",req.url)
-        
+
     let endpoint = req.path.substr(5, req.path.length)
 
 
@@ -187,7 +196,7 @@ function handleAPI(req, res) {
         if(!req.query[param.name] && param.required) {
             return res.send({
                 status: 400,
-                message: `Bad request. Missing parameter: '${param.name}'. ${param.msg || ""}`,
+                message: `Bad request. ERR#01 Missing parameter: '${param.name}'. ${param.msg || ""}`,
                 parameters: apiEvent.parameters
             })
         } else if(req.query[param.name]) {
@@ -196,14 +205,14 @@ function handleAPI(req, res) {
                     if(!Array.isArray(req.query[param.name])) {
                         return res.send({
                             status: 400,
-                            message: `Bad request. Invalid parameter type: '${param.name}'. ${param.msg || ""}`,
+                            message: `Bad request. ERR#02 Invalid parameter type: '${param.name}'. ${param.msg || ""}`,
                             parameters: apiEvent.parameters
                         })
                     }
                 } else if(typeof req.query[param.name] != param.type) {
                     return res.send({
                         status: 400,
-                        message: `Bad request. Invalid parameter type: '${param.name}'. ${param.msg || ""}`,
+                        message: `Bad request. ERR#03 Invalid parameter type: '${param.name}'. ${param.msg || ""}`,
                         parameters: apiEvent.parameters
                     })
                 }

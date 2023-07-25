@@ -1,6 +1,6 @@
 
 /**
- * @version 2.0.2 // 23/07/2023
+ * @version 2.1.0 // 26/07/2023
  * @author Sylicium
  * @description Module someFunction qui réunit plein de fonction utiles
  *
@@ -460,3 +460,50 @@ class Emitter {
     }
 }
 module.exports.Emitter = Emitter
+
+function parseSubZones(containerElement, listOfCutTexts, callbackGetText, defaultKey=undefined) {
+    if(typeof callbackGetText != 'function') throw new Error("parseSubZones(): callbackGetText must be type of 'function'.")
+    if(typeof listOfCutTexts != 'object') throw new Error("parseSubZones(): callbackGetText must be type of 'array'.")
+
+    /*
+    listOfCutTexts: {
+        cutOn: "text", // lowercase
+        value: "text"
+    }
+
+    */
+    
+    let containerElement_mapped = {
+        /*"Origine": [],
+        "Durée": [],
+        "Réalisation": [],
+        "Acteur": [],
+        "Genre": [],
+        "Année de production": [],
+        "Titre original": [],
+        "Critiques": [],
+        "Bande annonce": [],*/
+    }
+
+    for(let i in containerElement) {
+        let e = containerElement[i]
+        console.log("e:",e.outerHTML)
+        let firstStrongText = callbackGetText(e)
+        if(!firstStrongText) continue;
+
+        let the_key;
+        let found_key = false
+        for(let i in listOfCutTexts) {
+            if(firstStrongText.includes(listOfCutTexts[i].cutOn)) the_key = listOfCutTexts.value
+            found_key = true
+        }
+        if(!found_key && defaultKey) { the_key = defaultKey }
+        else { continue; }
+
+        containerElement_mapped[the_key] = e
+    }
+
+    return containerElement_mapped
+
+}
+module.exports.parseSubZones = parseSubZones

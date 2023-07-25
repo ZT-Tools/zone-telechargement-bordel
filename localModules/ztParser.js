@@ -27,10 +27,11 @@ class ZoneTelechargementParser {
 
 
 
-    _getPayloadURLFromQuery(category, query) {
+    _getPayloadURLFromQuery(category, query, page=1) {
+        if(typeof page != "number") throw new Error(`ztParser._getPayloadURLFromQuery(): 'page' must be type of 'number'`)
         category = category.trim().toLowerCase()
-        if(!this._allCategories.includes(category)) throw new Error(`_getPayloadURLFromQuery(): Category must be one in the following list: ${this._getAllCategories().join(", ")}`)
-        return this._getBaseURL() + `/?p=${category}&search=${encodeURI(query)}`
+        if(!this._allCategories.includes(category)) throw new Error(`ztParser._getPayloadURLFromQuery(): 'category' must be one in the following list: ${this._getAllCategories().join(", ")}`)
+        return this._getBaseURL() + `/?p=${category}&search=${encodeURI(query)}&page=${page}`
     }
 
     async _getDOMElementFromURL(url) {
@@ -39,54 +40,83 @@ class ZoneTelechargementParser {
         return document
     }
 
-    async search(category, query) {
-        try {
 
-            let payloadURL = this._getPayloadURLFromQuery(category, query)
+    async _parseMoviesFromSearchQuery(category, query, page) {
 
-            let document = await this._getDOMElementFromURL(payloadURL)
+        let payloadURL = this._getPayloadURLFromQuery(category, query, page)
 
-            let movieList_elements = [...document.getElementById("dle-content").childNodes].filter(x => { return x.getAttribute("class") == "cover_global" })
+        let document = await this._getDOMElementFromURL(payloadURL)
 
+        let movieList_elements = [...document.getElementById("dle-content").childNodes].filter(x => { return x.getAttribute("class") == "cover_global" })
 
+        let responseMovieList = []
 
-            let responseMovieList = []
+        if(movieList_elements.length == 0) { return responseMovieList }
 
-            if(movieList_elements.length == 0) { return responseMovieList }
+        for(let i in movieList_elements) {
+            let elem = movieList_elements[i]
 
-            for(let i in movieList_elements) {
-                let elem = movieList_elements[i]
-
-                let movieDatas = {
-                    "title": [...elem.getElementsByTagName("div")].filter(x => {
-                        return x.getAttribute("class") == "cover_infos_title"
-                    })[0].getElementsByTagName("a")[0].textContent,
-                    "url": this._getBaseURL() + [...elem.getElementsByTagName("div")].filter(x => {
-                        return x.getAttribute("class") == "cover_infos_title"
-                    })[0].getElementsByTagName("a")[0].getAttribute("href"),
-                    "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].filter(x => {
-                        return x.getAttribute("class") == "mainimg"
-                    })[0].src,
-                    "quality": [...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                        return x.getAttribute("class") == "cover_infos_title"
-                    })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent,
-                    "language": this._getMatchingGroups([...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                        return x.getAttribute("class") == "cover_infos_title"
-                    })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[1].textContent)[0],
-                    "publishedOn": new Date(elem.getElementsByTagName("time")[0].textContent)
-                }
-                responseMovieList.push(movieDatas)
-            }
-
-            console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+            let the_url = this._getBaseURL() + [...elem.getElementsByTagName("div")].filter(x => {
                 return x.getAttribute("class") == "cover_infos_title"
-            })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent)
+            })[0].getElementsByTagName("a")[0].getAttribute("href")
 
+            let movieDatas = {
+                "title": [...elem.getElementsByTagName("div")].filter(x => {
+                    return x.getAttribute("class") == "cover_infos_title"
+                })[0].getElementsByTagName("a")[0].textContent,
+                "url": the_url,
+                "id": the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
+                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].filter(x => {
+                    return x.getAttribute("class") == "mainimg"
+                })[0].src,
+                "quality": [...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+                    return x.getAttribute("class") == "cover_infos_title"
+                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent,
+                "language": this._getMatchingGroups([...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+                    return x.getAttribute("class") == "cover_infos_title"
+                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[1].textContent)[0],
+                "publishedOn": new Date(elem.getElementsByTagName("time")[0].textContent)
+            }
+            responseMovieList.push(movieDatas)
+        }
 
-            // console.log("responseMovieList:",responseMovieList)
+        /*
+        console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+            return x.getAttribute("class") == "cover_infos_title"
+        })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent)
+        */
 
+        return responseMovieList
+    }
+
+    async searchAll(category, query) {
+        try {
+            let responseMovieList = []
+            let tempMovieList = false
+            let searchPage = 0
+            while(tempMovieList.length != 0) {
+                searchPage++
+                tempMovieList = await this._parseMoviesFromSearchQuery(category, query, searchPage)
+                responseMovieList = responseMovieList.concat(tempMovieList)
+                console.log(`Added ${tempMovieList.length} movies from page ${searchPage}`)
+            }
             return responseMovieList
-        
+        } catch(e) {
+            console.log(e)
+            return {
+                status: false,
+                error: `${e}`,
+                stack: e.stack.split("\n"),
+            }
+        }
+    }
+
+    
+
+    async search(category, query, page) {
+        try {
+            let responseMovieList = await this._parseMoviesFromSearchQuery(category, query, page)
+            return responseMovieList
         } catch(e) {
             console.log(e)
             return {
@@ -98,13 +128,18 @@ class ZoneTelechargementParser {
     }
 
 
-    async getMovieDetails(movieURL) {
+    async getMovieDetails(movieID) {
+
+
+        let movieURL = this._getBaseURL() + `?p=film&id=${movieID}` // FILM sans S car page de description de UN seul film
 
         if(!movieURL.startsWith(this._getBaseURL())) return {
             status: false,
             error: `Wrong base URL provided`
         }
 
+        console.log("movieURL:",movieURL)
+        
         let document = await this._getDOMElementFromURL(movieURL)
 
         let corpsElement = (
@@ -207,8 +242,8 @@ class ZoneTelechargementParser {
             fileName: [...corpsElement.getElementsByTagName("center")].filter(x => {
                 return (x.getElementsByTagName("font")[0]?.getAttribute("color") == "red")
             })[0].textContent.trim(),
-            origin: getHashtagTextNumber(2).textContent.trim(),
-            duration: getHashtagTextNumber(4).textContent.trim(),
+            origin: getHashtagTextNumber(2)?.textContent.trim(),
+            duration: getHashtagTextNumber(4)?.textContent.trim(),
             director: this._getBaseURL() + encodeURI(centerElements[1].filter(x => { return x.nodeName == "a"})[0].getAttribute("href")),
             actors: filmInfosElements[4].filter(x => { return x.nodeName == "a" }).map(x => {
                 return {
@@ -222,9 +257,9 @@ class ZoneTelechargementParser {
                     url: this._getBaseURL() + encodeURI(x.getAttribute("href"))
                 }
             }),
-            productionYear: getHashtagTextNumber(19).textContent.trim(),
-            originalTitle: getHashtagTextNumber(21).textContent.trim(),
-            review: getHashtagTextNumber(23).textContent.trim(),
+            productionYear: getHashtagTextNumber(19)?.textContent.trim(),
+            originalTitle: getHashtagTextNumber(21)?.textContent.trim(),
+            review: getHashtagTextNumber(23)?.textContent.trim(),
             trailer: centerElements[1].filter(x => {
                 try {
                     console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))

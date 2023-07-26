@@ -206,7 +206,7 @@ div.pages div div.page:not(.actualPage) {
 .object_icon {
     margin: auto;
     margin-left: 10px;
-    display: none;
+    display: flex;
 }
 
 .object:hover .object_icon {

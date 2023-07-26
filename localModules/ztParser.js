@@ -1,8 +1,8 @@
 /**
  * @name ztParser
  * @author Sylicium
- * @date 26/07/2023
- * @version 1.3.3
+ * @date 27/07/2023
+ * @version 1.4.0
  */
 
 const axios = require("axios")
@@ -332,6 +332,100 @@ class ZoneTelechargementParser {
         console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
         console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
         */
+
+
+        
+        // =============== LIENS DE TELECHARGEMENT ===============
+
+        
+        let downloadLinksElements = [
+            [], [], [], [], [], [], [], [], [], [], [], [], [], []
+        ]
+
+        let all_cutsElement_dl = [
+            `Liens De Téléchargement`,
+            `Liens De Streaming`
+        ]
+
+        let downloadLinks_currentStep = 0
+
+        let temp3 = [...corpsElement.childNodes]
+        for(let i in temp3) {
+            let e = temp3[i]
+            // console.log("e.nodeName",e.nodeName)
+
+            if(e.nodeName == "h2" && somef.anyWordInText(e.innerHTML, all_cutsElement_dl) ) { console.log("downloadLinks STEP +1"); downloadLinks_currentStep++ }
+
+            downloadLinksElements[downloadLinks_currentStep].push(e)
+        }
+
+        for(let i in downloadLinksElements) {
+            // console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
+        }
+
+        /*
+        downloadLinksElements[1] : Liens De téléchargement
+        downloadLinksElements[2] : Liens De Streaming
+
+        */
+
+        // ===================== LIENS DE TELECHARGEMENT only  ========================
+
+
+        function parseDownloadLinks(downloadLinksElements_number) {
+            let onlyDownloadLinksElement = downloadLinksElements_number.filter(x => { return x.getAttribute("id") == "news-id-23557" })[0].getElementsByClassName("postinfo")[0]
+            let downloadLinksElements_dlprotect = [
+                [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+            ]
+            let downloadLinks_dlprotect_currentStep = 0
+            let lastWasBr = false
+
+            let temp4 = [...onlyDownloadLinksElement.childNodes]
+            for(let i in temp4) {
+                let e = temp4[i]
+                // console.log(".nodeName",e.nodeName)
+                if(e.nodeName == "#text") continue;
+
+                if(e.nodeName == "br" && !lastWasBr) {
+                    downloadLinks_dlprotect_currentStep++
+                    lastWasBr = true
+                    continue;
+                }
+                lastWasBr = false                
+                downloadLinksElements_dlprotect[downloadLinks_dlprotect_currentStep].push(e)
+            }
+
+            for(let i in downloadLinksElements_dlprotect) {
+                // console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+            }
+
+
+            /*for(let i in downloadLinksElements_dlprotect) {
+                console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+            }*/
+
+            let downloadLinksMapped = downloadLinksElements_dlprotect.filter(x => {
+                return x.filter(x => x.nodeName == "b").length == 2
+            }).map(x => {
+                return {
+                    service: x.filter(x => x.nodeName == "b")[0].textContent.trim(),
+                    url: x.filter(x => x.nodeName == "b")[1].getElementsByTagName("a")[0].getAttribute("href").trim(),
+                }
+            })
+            return downloadLinksMapped
+        }
+
+        movieInfos.downloadLinks = parseDownloadLinks(downloadLinksElements[1])
+
+        // ===================== LIENS DE TELECHARGEMENT only  ========================
+
+        movieInfos.streamingLinks = parseDownloadLinks(downloadLinksElements[2])
+
+        // ===================== ======================== ========================
+        
+
+
+
 
 
         let backPayload = {

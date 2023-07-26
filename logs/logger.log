@@ -515,3 +515,78 @@ File created on 23/07/2023 at 22:52:06.409
 [26/07/2023 - 02:20:02.373 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
 [26/07/2023 - 02:20:30.593 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
 [26/07/2023 - 02:20:30.809 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 00:53:26.797 INFO] (<root>zone-telechargement-api\server.js:66:8): [API] Loading APIEvents...
+[27/07/2023 - 00:53:26.804 INFO] (<root>zone-telechargement-api\server.js:71:20): [API]   Loading api endpoints for method GET
+[27/07/2023 - 00:53:26.809 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (GET) /getMovieDetails
+[27/07/2023 - 00:53:26.811 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (GET) /search
+[27/07/2023 - 00:53:26.815 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (GET) /searchAll
+[27/07/2023 - 00:53:26.817 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (GET) /test
+[27/07/2023 - 00:53:26.821 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (GET) /__main__
+[27/07/2023 - 00:53:26.822 INFO] (<root>zone-telechargement-api\server.js:71:20): [API]   Loading api endpoints for method POST
+[27/07/2023 - 00:53:26.825 INFO] (<root>zone-telechargement-api\server.js:80:24): [API]     ✔ Loaded API endpoint (POST) /sendmessage
+[27/07/2023 - 00:53:26.827 INFO] (<root>zone-telechargement-api\server.js:90:8): [API] ✅ Loaded 6 APIEvents,[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+[27/07/2023 - 00:53:26.913 INFO] (<root>zone-telechargement-api\index.js:91:20): ✔ Successfully loaded command ping
+[27/07/2023 - 00:53:26.934 INFO] (<root>zone-telechargement-api\server.js:139:16): [server.js] Serveur démarré sur le port 8080
+[27/07/2023 - 00:53:28.560 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /
+[27/07/2023 - 00:53:29.816 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 00:53:31.087 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 00:54:48.498 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 00:54:48.840 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 00:56:45.462 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 00:56:45.787 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 00:59:05.452 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 00:59:05.763 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 00:59:59.484 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 00:59:59.868 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:01:04.519 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:01:04.880 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:02:08.129 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:02:08.590 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:02:30.721 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:02:31.109 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:03:19.262 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:03:19.874 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:13:21.069 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:13:21.722 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:16:20.029 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:16:20.398 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:16:42.605 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:16:42.951 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:18:16.882 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:18:17.269 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:19:02.868 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:19:03.208 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:19:56.442 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:19:57.194 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:20:15.493 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:20:16.055 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:20:30.252 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:20:31.012 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:21:02.561 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:21:03.317 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:21:31.259 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:21:32.065 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:22:44.903 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:22:45.661 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:23:23.128 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:23:23.827 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:23:35.645 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:23:36.120 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:23:48.230 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:23:48.525 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:24:05.230 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:24:05.575 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:24:21.921 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:24:22.305 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:24:33.838 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:24:34.179 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:24:56.723 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:24:57.029 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:25:35.471 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:25:35.830 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:26:05.909 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:26:06.290 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:26:45.528 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:26:45.894 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico
+[27/07/2023 - 01:36:00.559 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /docs
+[27/07/2023 - 01:36:01.011 DEBUG] (<root>zone-telechargement-api\server.js:113:20): [Web] GET -> /favicon.ico

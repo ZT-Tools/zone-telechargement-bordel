@@ -1,3 +1,10 @@
+/**
+ * @name ztParser
+ * @author Sylicium
+ * @date 26/07/2023
+ * @version 1.3.3
+ */
+
 const axios = require("axios")
 
 var DomParser = require('dom-parser');
@@ -229,11 +236,54 @@ class ZoneTelechargementParser {
             console.log(filmInfosElements[i].map(x => x.outerHTML))
         }
 
-        console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
-        console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
+        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
+        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
 
-        let getHashtagTextNumber = n => {
-            return centerElements[1].filter(x => { return x.nodeName == "#text"})[n] ?? {}
+
+        
+        
+        let filmInfosElements_mapped = {
+            /*"Origine": [],
+            "Durée": [],
+            "Réalisation": [],
+            "Acteur": [],
+            "Genre": [],
+            "Année de production": [],
+            "Titre original": [],
+            "Critiques": [],
+            "Bande annonce": [],*/
+        }
+
+        for(let i in filmInfosElements) {
+            let e = filmInfosElements[i]
+            let firstStrongText = e.filter(x => { return x.nodeName == "strong"})[0]?.getElementsByTagName("u")[0]?.textContent?.toLowerCase()?.trim() ?? null
+            if(!firstStrongText) continue;
+
+            let the_key;
+            if(firstStrongText.includes("origine")) the_key = "Origine"
+            else if(firstStrongText.includes("durée")) the_key = "Durée"
+            else if(firstStrongText.includes("réalisation")) the_key = "Réalisation"
+            else if(firstStrongText.includes("acteur")) the_key = "Acteur"
+            else if(firstStrongText.includes("genre")) the_key = "Genre"
+            else if(firstStrongText.includes("année")) the_key = "Année de production"
+            else if(firstStrongText.includes("titre")) the_key = "Titre original"
+            else if(firstStrongText.includes("critiques")) the_key = "Critiques"
+            else if(firstStrongText.includes("bande")) the_key = "Bande annonce"
+            filmInfosElements_mapped[the_key] = e
+        }
+
+
+        for(let i in [...Object.keys(filmInfosElements_mapped)]) {
+            let key = [...Object.keys(filmInfosElements_mapped)][i]
+            
+            console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
+        }
+
+
+
+
+        let getHashtagTextNumber = (elementContainer, n) => {
+            return elementContainer.filter(x => { return x.nodeName == "#text"})[n] ?? false
         }
 
         let movieInfos = {
@@ -242,8 +292,8 @@ class ZoneTelechargementParser {
             fileName: [...corpsElement.getElementsByTagName("center")].filter(x => {
                 return (x.getElementsByTagName("font")[0]?.getAttribute("color") == "red")
             })[0].textContent.trim(),
-            origin: getHashtagTextNumber(2)?.textContent.trim(),
-            duration: getHashtagTextNumber(4)?.textContent.trim(),
+            origin: filmInfosElements_mapped["Origine"] ? (getHashtagTextNumber(filmInfosElements_mapped["Origine"], 0)?.textContent?.trim() ?? null) : null,
+            duration: filmInfosElements_mapped["Durée"] ? (getHashtagTextNumber(filmInfosElements_mapped["Durée"], 0)?.textContent?.trim() ?? null) : null,
             director: this._getBaseURL() + encodeURI(centerElements[1].filter(x => { return x.nodeName == "a"})[0].getAttribute("href")),
             actors: filmInfosElements[4].filter(x => { return x.nodeName == "a" }).map(x => {
                 return {
@@ -257,17 +307,19 @@ class ZoneTelechargementParser {
                     url: this._getBaseURL() + encodeURI(x.getAttribute("href"))
                 }
             }),
-            productionYear: getHashtagTextNumber(19)?.textContent.trim(),
-            originalTitle: getHashtagTextNumber(21)?.textContent.trim(),
-            review: getHashtagTextNumber(23)?.textContent.trim(),
-            trailer: centerElements[1].filter(x => {
+            productionYear: filmInfosElements_mapped["Année de production"] ? (getHashtagTextNumber(filmInfosElements_mapped["Année de production"], 0)?.textContent?.trim() ?? null) : null,
+            originalTitle: filmInfosElements_mapped["Titre original"] ? (getHashtagTextNumber(filmInfosElements_mapped["Titre original"], 0)?.textContent?.trim() ?? null) : null,
+            review: filmInfosElements_mapped["Critiques"] ? (getHashtagTextNumber(filmInfosElements_mapped["Critiques"], 0)?.textContent?.trim() ?? null) : null,
+            trailer: filmInfosElements_mapped["Bande annonce"] ? (filmInfosElements_mapped["Bande annonce"].filter(x => {
                 try {
-                    console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
+                    // console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
                     return x.getElementsByTagName("a")[0].getAttribute("href").indexOf("allocine") != -1
                 } catch(e) {
                     return false
                 }
-            })[0]?.getElementsByTagName("a")[0]?.getAttribute("href")?.trim() ?? null
+            })[0]?.getElementsByTagName("a")[0]?.getAttribute("href")?.trim() ?? null) : null,
+            downloadLinks: null,
+            streamingLinks: null
         }
 
         console.log("infos:",movieInfos)

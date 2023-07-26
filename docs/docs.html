@@ -4,7 +4,7 @@
         <meta property="og:site_name" content="Zone Telechargement API">
         <meta property="og:title" content="ZT API Documentation">
         <meta name="theme-color" content="#586DF2">
-        <link rel="stylesheet" href="/assets/css/documentation.css">
+        <link rel="stylesheet" href="./assets/css/documentation.css">
     </head>
 
     <body>
@@ -128,7 +128,7 @@
                             <svg style="margin: auto;" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" fill="#F5F5F5" width="12.5px" height="12.5px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path d="M459.654,233.373l-90.531,90.5c-49.969,50-131.031,50-181,0c-7.875-7.844-14.031-16.688-19.438-25.813l42.063-42.063c2-2.016,4.469-3.172,6.828-4.531c2.906,9.938,7.984,19.344,15.797,27.156c24.953,24.969,65.563,24.938,90.5,0l90.5-90.5c24.969-24.969,24.969-65.563,0-90.516c-24.938-24.953-65.531-24.953-90.5,0l-32.188,32.219c-26.109-10.172-54.25-12.906-81.641-8.891l68.578-68.578c50-49.984,131.031-49.984,181.031,0C509.623,102.342,509.623,183.389,459.654,233.373z M220.326,382.186l-32.203,32.219c-24.953,24.938-65.563,24.938-90.516,0c-24.953-24.969-24.953-65.563,0-90.531l90.516-90.5c24.969-24.969,65.547-24.969,90.5,0c7.797,7.797,12.875,17.203,15.813,27.125c2.375-1.375,4.813-2.5,6.813-4.5l42.063-42.047c-5.375-9.156-11.563-17.969-19.438-25.828c-49.969-49.984-131.031-49.984-181.016,0l-90.5,90.5c-49.984,50-49.984,131.031,0,181.031c49.984,49.969,131.031,49.969,181.016,0l68.594-68.594C274.561,395.092,246.42,392.342,220.326,382.186z"/></svg>
                         </div>
                     </div>
-                    <div class="description">The Discord ZT API was created on August 10, 2022 (the first version was usable on 08/20/2022).</div>
+                    <div class="description">The Discord ZT API was created on July 23, 2023 (the first version was usable on July 26th of 2023).</div>
                     <div class="description">The purpose of this API is to allow third-party applications to easily retrieve information from the Zone-telechargement site without having to do scraping.</div>
                     <br><br>
                     <div class="object">
@@ -180,8 +180,24 @@
                     </div>
                     <div>
                         <div class="endpoint">
-                            <span class="method">POST</span>
+                            <span class="method">GET</span>
                             <span class="endpointUrl"> /api/search</span>
+                        </div>
+                    </div>
+                    <div class="description">Endpoint to search movies by page</div>
+                    <br>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">GET</span>
+                            <span class="endpointUrl"> /api/searchAll</span>
+                        </div>
+                    </div>
+                    <div class="description">Endpoint to search all movies matching with query</div>
+                    <br>
+                    <div>
+                        <div class="endpoint">
+                            <span class="method">GET</span>
+                            <span class="endpointUrl"> /api/getMovieDetails</span>
                         </div>
                     </div>
                     <div class="description">Endpoint to search movies</div>
@@ -318,6 +334,6 @@
 
             </div>
         </div>
-        <script src="/assets/js/documentation.js"></script>
+        <script src="./assets/js/documentation.js"></script>
     </body>
 </html>

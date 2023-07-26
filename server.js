@@ -43,8 +43,8 @@ let servEndpoints = {
         relative: "/api", // chemin relatif par rapport à ce fichier
     },
     site: {
-        fs: "/site", // chemin depuis le root du projet et sans le slash de fin
-        relative: "/site", // chemin relatif par rapport à ce fichier
+        fs: "/docs", // chemin depuis le root du projet et sans le slash de fin
+        relative: "/docs", // chemin relatif par rapport à ce fichier
     }
 }
 

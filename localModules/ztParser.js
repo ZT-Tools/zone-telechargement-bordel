@@ -291,7 +291,7 @@ class ZoneTelechargementParser {
             synopsis: centerElements[2].filter(x => { return x.nodeName == "em" })[0].textContent.trim(),
             fileName: [...corpsElement.getElementsByTagName("center")].filter(x => {
                 return (x.getElementsByTagName("font")[0]?.getAttribute("color") == "red")
-            })[0].textContent.trim(),
+            })[0]?.textContent.trim() ?? null,
             origin: filmInfosElements_mapped["Origine"] ? (getHashtagTextNumber(filmInfosElements_mapped["Origine"], 0)?.textContent?.trim() ?? null) : null,
             duration: filmInfosElements_mapped["Durée"] ? (getHashtagTextNumber(filmInfosElements_mapped["Durée"], 0)?.textContent?.trim() ?? null) : null,
             director: this._getBaseURL() + encodeURI(centerElements[1].filter(x => { return x.nodeName == "a"})[0].getAttribute("href")),

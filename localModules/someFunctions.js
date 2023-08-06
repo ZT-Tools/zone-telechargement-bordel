@@ -6,38 +6,6 @@
  *
 */
 
-
-/*
-
-Envoyer un email https://www.youtube.com/watch?v=JgcDZl8eXTg
-
-let nodemailer = require("nodemailer")
-
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: "mymail@gmail.com",
-        pass: ""
-    }
-})
-
-const options = {
-    from: "myaccount@dirtybiologistan.cf",
-    to: "",
-    subject: "Code de double authentification",
-    text: "123456"
-}
-
-transporter.sendMail(options, function(err,info) {
-    if(err) throw err
-    console.log("Sent:",info.response)
-    }
-)
-*/
-
-
-
-
 const fs = require("fs")
 
 

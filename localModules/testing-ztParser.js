@@ -1,10 +1,11 @@
-/**
- * @name ztParser
- * @author Sylicium
- * @date 07/08/2023
- * @version 1.5.0
- * @github https://github.com/Sylicium/zone-telechargement-api/
- */
+/*
+
+/!\ Developement version /!\
+Do not use this file in a production environment.
+Or if you do, at your own risks, and dont make any issue about it please.
+
+*/
+
 
 const axios = require("axios")
 
@@ -32,6 +33,8 @@ class ZoneTelechargementParser {
             return s
         }
     };
+
+
 
     _getPayloadURLFromQuery(category, query, page=1) {
         if(typeof page != "number") throw new Error(`ztParser._getPayloadURLFromQuery(): 'page' must be type of 'number'`)
@@ -95,7 +98,6 @@ class ZoneTelechargementParser {
         return responseMovieList
     }
 
-    
     useBaseURL(url) {
         this._ZTBaseURL(url)
         return true
@@ -150,8 +152,6 @@ class ZoneTelechargementParser {
             error: `Wrong base URL provided`
         }
 
-        console.log("movieURL:",movieURL)
-        
         let document = await this._getDOMElementFromURL(movieURL)
 
         let corpsElement = (
@@ -167,14 +167,17 @@ class ZoneTelechargementParser {
 
 
         let otherversions_div = mainElement.getElementsByClassName("otherversions")[0]
-        let version_list_a = [...otherversions_div.getElementsByTagName("a")]
-        let versions = version_list_a.map(x => {
-                return {
-                    url: this._getBaseURL() + x.getAttribute("href"),
-                    quality: x.getElementsByTagName("b")[0].textContent,
-                    language: this._getMatchingGroups(x.getElementsByTagName("b")[1].textContent)[0],
-                }
-        })
+        let versions = []
+        if(otherversions_div) {
+            let version_list_a = [...otherversions_div.getElementsByTagName("a")]
+            versions = version_list_a.map(x => {
+                    return {
+                        url: this._getBaseURL() + x.getAttribute("href"),
+                        quality: x.getElementsByTagName("b")[0].textContent,
+                        language: this._getMatchingGroups(x.getElementsByTagName("b")[1].textContent)[0],
+                    }
+            })
+        }
         // console.log("version1:",otherversions_div)
         // console.log("version2:",version_list_a)
         // console.log("version3:",versions)
@@ -208,12 +211,8 @@ class ZoneTelechargementParser {
         
         // =============== FILM INFOS ( centerElements[1] ) ===============
 
-        
-        let filmInfosElements = [
-            [], [], [], [], [], [], [], [], [], [], [], [], [], []
-        ]
-
-        let all_cutsElement_src2 = [
+        console.log("center_element",center_element.outerHTML)
+        let filmInfosElements = somef.parseSubZones(center_element, (e) => { return e.nodeName == "strong" && somef.anyWordInText(e.innerHTML, [
             `Origine`,
             `Durée`,
             `Réalisation`,
@@ -223,29 +222,40 @@ class ZoneTelechargementParser {
             `Titre original`,
             `Critiques`,
             `Bande annonce`
-        ]
+        ])})
 
-        let filmInfos_currentStep = 0
+        // console.log("centerElements[1] outerHTML:",centerElements[1].map(x => { return x.outerHTML.trim() }))
+        // console.log("centerElements[1] nodeName :",centerElements[1].map(x => { return x.nodeName }))
 
-        let temp2 = [...center_element.childNodes]
-        for(let i in temp2) {
-            let e = temp2[i]
-            // console.log("e.nodeName",e.nodeName)
+        console.log("centerElements[3]",centerElements[3].map(x => x.outerHTML))
 
-            if(e.nodeName == "strong" && somef.anyWordInText(e.innerHTML, all_cutsElement_src2) ) { filmInfos_currentStep++ }
+        let parsedZone = somef.mapNameParsedSubZones(
+            filmInfosElements,
+            [
+                { cutOn: "origine", value: "origine" },
+                { cutOn: "durée", value: "durée" },
+                { cutOn: "réalisation", value: "réalisation" },
+                { cutOn: "acteur", value: "acteur" },
+                { cutOn: "genre", value: "genre" },
+                { cutOn: "année", value: "année" },
+                { cutOn: "titre", value: "titre" },
+                { cutOn: "critiques", value: "critiques" },
+                { cutOn: "bande", value: "bande annonce" },
+                { cutOn: "qualité", value: "quality" },
+                { cutOn: "langue", value: "language" },
+                { cutOn: "taille du fichier", value: "size" },
+            ],
+            (e) => { return e.filter(x => { return x.nodeName == "strong"})[0]?.getElementsByTagName("u")[0]?.textContent?.toLowerCase()?.trim() ?? null},
+            "none"
+        )
 
-            filmInfosElements[filmInfos_currentStep].push(e)
+        console.log("parsedZone:",parsedZone)
+
+        for(let i in parsedZone) {
+            console.log(`parsedZone[${i}]`, parsedZone[i].map(x => x.outerHTML))
         }
 
-        for(let i in filmInfosElements) {
-            console.log(filmInfosElements[i].map(x => x.outerHTML))
-        }
 
-        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
-        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
-
-
-        
         
         let filmInfosElements_mapped = {
             /*"Origine": [],
@@ -274,6 +284,9 @@ class ZoneTelechargementParser {
             else if(firstStrongText.includes("titre")) the_key = "Titre original"
             else if(firstStrongText.includes("critiques")) the_key = "Critiques"
             else if(firstStrongText.includes("bande")) the_key = "Bande annonce"
+            else if(firstStrongText.includes("qualité")) the_key = "quality"
+            else if(firstStrongText.includes("langue")) the_key = "language"
+            else if(firstStrongText.includes("taille du fichier")) the_key = "fileSize"
             filmInfosElements_mapped[the_key] = e
         }
 
@@ -287,6 +300,9 @@ class ZoneTelechargementParser {
 
 
 
+        
+
+
         let getHashtagTextNumber = (elementContainer, n) => {
             return elementContainer.filter(x => { return x.nodeName == "#text"})[n] ?? false
         }
@@ -296,7 +312,10 @@ class ZoneTelechargementParser {
             synopsis: centerElements[2].filter(x => { return x.nodeName == "em" })[0].textContent.trim(),
             fileName: [...corpsElement.getElementsByTagName("center")].filter(x => {
                 return (x.getElementsByTagName("font")[0]?.getAttribute("color") == "red")
-            })[0]?.textContent.trim() ?? null,
+            })[0].textContent.trim(),
+            fileSize: filmInfosElements_mapped["fileSize"] ? (getHashtagTextNumber(filmInfosElements_mapped["fileSize"], 0)?.textContent?.trim() ?? null) : null,
+            quality: filmInfosElements_mapped["quality"] ? (getHashtagTextNumber(filmInfosElements_mapped["quality"], 0)?.textContent?.trim() ?? null) : null,
+            language: filmInfosElements_mapped["language"] ? (getHashtagTextNumber(filmInfosElements_mapped["language"], 0)?.textContent?.trim() ?? null) : null,
             origin: filmInfosElements_mapped["Origine"] ? (getHashtagTextNumber(filmInfosElements_mapped["Origine"], 0)?.textContent?.trim() ?? null) : null,
             duration: filmInfosElements_mapped["Durée"] ? (getHashtagTextNumber(filmInfosElements_mapped["Durée"], 0)?.textContent?.trim() ?? null) : null,
             director: this._getBaseURL() + encodeURI(centerElements[1].filter(x => { return x.nodeName == "a"})[0].getAttribute("href")),
@@ -327,7 +346,10 @@ class ZoneTelechargementParser {
             streamingLinks: null
         }
 
-        console.log("infos:",movieInfos)
+        // console.log("infos:",movieInfos)
+
+
+        // console.log("corpsElement:",corpsElement.outerHTML)
 
 
         // =============== SYNOPSIS ( centerElements[2] ) ===============
@@ -338,7 +360,7 @@ class ZoneTelechargementParser {
         console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
         */
 
-
+        
         
         // =============== LIENS DE TELECHARGEMENT ===============
 
@@ -433,6 +455,11 @@ class ZoneTelechargementParser {
 
 
 
+
+
+
+
+
         let backPayload = {
             movieInfos: movieInfos,
             otherVersions: versions,
@@ -448,6 +475,12 @@ class ZoneTelechargementParser {
 
 let ZT = new ZoneTelechargementParser()
 
-// await ZT.search("star wars")
 
-module.exports = new ZoneTelechargementParser()
+let a = async () => {
+    
+    console.log(JSON.stringify(await ZT.getMovieDetails("8726"),null,4))
+    // ZT.getMovieDetails("42023")
+    // console.log(await ZT.search("films","transformer"))
+    //ZT.search("films","transformer")
+}
+a()

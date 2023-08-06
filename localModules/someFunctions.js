@@ -461,7 +461,33 @@ class Emitter {
 }
 module.exports.Emitter = Emitter
 
-function parseSubZones(containerElement, listOfCutTexts, callbackGetText, defaultKey=undefined) {
+
+function parseSubZones(containerElement, callbackAddStep) {
+   
+    let parsedZoneElements = []
+
+    let parseZone_currentStep = 0
+
+    let temp2 = [...containerElement.childNodes]
+    for(let i in temp2) {
+        let e = temp2[i]
+        if(callbackAddStep(e)) { parseZone_currentStep++ }
+        if(parsedZoneElements.length == parseZone_currentStep) parsedZoneElements.push([])
+        parsedZoneElements[parseZone_currentStep].push(e)
+    }
+
+    /*for(let i in parsedZoneElements) {
+        console.log(`parsedZoneElements[${i}]`, parsedZoneElements[i].map(x => x.outerHTML))
+    }
+    */
+
+    return parsedZoneElements
+
+}
+module.exports.parseSubZones = parseSubZones
+
+
+function mapNameParsedSubZones(containerElement, listOfCutTexts, callbackGetText, defaultKey=undefined) {
     if(typeof callbackGetText != 'function') throw new Error("parseSubZones(): callbackGetText must be type of 'function'.")
     if(typeof listOfCutTexts != 'object') throw new Error("parseSubZones(): callbackGetText must be type of 'array'.")
 
@@ -487,23 +513,29 @@ function parseSubZones(containerElement, listOfCutTexts, callbackGetText, defaul
 
     for(let i in containerElement) {
         let e = containerElement[i]
-        console.log("e:",e.outerHTML)
         let firstStrongText = callbackGetText(e)
         if(!firstStrongText) continue;
+        
+        console.log("firstStrongText:",firstStrongText)
 
         let the_key;
         let found_key = false
         for(let i in listOfCutTexts) {
-            if(firstStrongText.includes(listOfCutTexts[i].cutOn)) the_key = listOfCutTexts.value
-            found_key = true
+            console.log("listOfCutTexts[i].cutOn.toLowerCase():",listOfCutTexts[i].cutOn.toLowerCase())
+            if(firstStrongText.indexOf(listOfCutTexts[i].cutOn.toLowerCase()) != -1) {
+                the_key = listOfCutTexts[i].value
+                found_key = true
+                break;
+            }
         }
+        console.log("the_key 1:", the_key, found_key)
         if(!found_key && defaultKey) { the_key = defaultKey }
-        else { continue; }
+        console.log("the_key 2:", the_key)
 
-        containerElement_mapped[the_key] = e
+        containerElement_mapped[`${the_key}`] = e
     }
 
     return containerElement_mapped
 
 }
-module.exports.parseSubZones = parseSubZones
+module.exports.mapNameParsedSubZones = mapNameParsedSubZones

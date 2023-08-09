@@ -267,13 +267,9 @@ for(let i in categories) {
     expect(s2.length).toBeGreaterThanOrEqual(0)
     expect(s2.length).toBeLessThan(26)
     
-    let s3 = await ZTP.search("films","Iron man")
+    let s3 = await ZTP.search("films","fast and furious")
     expect(s3.length).toBeGreaterThanOrEqual(0)
     expect(s3.length).toBeLessThan(26)
-    
-    let s4 = await ZTP.search("films","Iron man")
-    expect(s4.length).toBeGreaterThanOrEqual(0)
-    expect(s4.length).toBeLessThan(26)
   })
 
   test(`[${logPrefix}/category:${categoryToCheck} 3/${testsCount}] ZTP.search() bad searches returning empty list`, async () => {
@@ -281,10 +277,6 @@ for(let i in categories) {
     expect(await ZTP.search("films","z$*ù*ê*é*!;::/nzguejhfozf*!;::/nza")).not.toHaveLength(0) // Maybe due to searchbar size limit its glitching
     expect(await ZTP.search("films","////////////////////////////////////")).toHaveLength(0)
     expect(await ZTP.search("films","/////////////////////////////////////")).not.toHaveLength(0) // Maybe due to searchbar size limit its glitching
-  });
-
-  test(`[${logPrefix}/category:${categoryToCheck} 3/${testsCount}] ZTP.search() bad searches returning empty list`, async () => {
-
   });
   
 }

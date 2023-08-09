@@ -1,8 +1,8 @@
 /**
  * @name ztParser
  * @author Sylicium
- * @date 07/08/2023
- * @version 1.5.0
+ * @date 09/08/2023
+ * @version 1.6.0
  * @github https://github.com/Sylicium/zone-telechargement-api/
  */
 
@@ -13,9 +13,12 @@ var somef = require('./someFunctions');
 var parser = new DomParser();
 
 class ZoneTelechargementParser {
-    constructor() {
+    constructor(devMode=false) {
         this._ZTBaseURL = `https://www.zone-telechargement.homes` 
         this._allCategories = [ "films", "series", "jeux", "musiques", "mangas", "ebooks", "autres-videos", "logiciels", "mobiles" ]
+        this._lastAxiosRequestTimestamp = 0 // Do not edit this value. used as temp
+        this._axiosRequestTimeInBetween = 250 // Default: 250 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
+        this._devMode = devMode;
     }
     
     _getBaseURL() { return this._ZTBaseURL }
@@ -28,7 +31,7 @@ class ZoneTelechargementParser {
             }
             return a;
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return s
         }
     };
@@ -41,6 +44,11 @@ class ZoneTelechargementParser {
     }
 
     async _getDOMElementFromURL(url) {
+        if(Date.now()-this._lastAxiosRequestTimestamp < this._axiosRequestTimeInBetween) {
+            await somef.sleep(this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
+        }
+        this._lastAxiosRequestTimestamp = Date.now()
+
         let response = await axios.get(url)
         let document = parser.parseFromString(response.data)
         return document
@@ -66,28 +74,39 @@ class ZoneTelechargementParser {
                 return x.getAttribute("class") == "cover_infos_title"
             })[0].getElementsByTagName("a")[0].getAttribute("href")
 
+
+            // if(this._devMode) console.log("\n\nDOM: ", [...elem.getElementsByTagName("div")].map(x => x.innerHTML),"\n\n");
+
+            let detail_release = [...elem.getElementsByClassName("cover_infos_global")]
+            .map(x => {
+                const matches = x.innerHTML.match(/<b>(.*?)<\/b>/g);
+                if (matches) {
+                    return matches.map(match => match.match(/<b>(.*?)<\/b>/)[1]);
+                }
+                return [];
+            }).reduce((acc, values) => acc.concat(values), []);
+
+            // if(this._devMode) console.log("detail_release: ", detail_release)
+
+            let publishDate = new Date(elem.getElementsByTagName("time")[0].textContent)
+            
             let movieDatas = {
                 "title": [...elem.getElementsByTagName("div")].filter(x => {
                     return x.getAttribute("class") == "cover_infos_title"
                 })[0].getElementsByTagName("a")[0].textContent,
                 "url": the_url,
                 "id": the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
-                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].filter(x => {
-                    return x.getAttribute("class") == "mainimg"
-                })[0].src,
-                "quality": [...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                    return x.getAttribute("class") == "cover_infos_title"
-                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent,
-                "language": this._getMatchingGroups([...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                    return x.getAttribute("class") == "cover_infos_title"
-                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[1].textContent)[0],
-                "publishedOn": new Date(elem.getElementsByTagName("time")[0].textContent)
+                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].map(x => x.getAttribute("src"))[0],
+                "quality": detail_release[0],
+                "language": detail_release[1].slice(1, -1),
+                "publishedOn": publishDate,
+                "publishedTimestamp": publishDate.getTime(),
             }
             responseMovieList.push(movieDatas)
         }
 
         /*
-        console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+        if(this._devMode) console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
             return x.getAttribute("class") == "cover_infos_title"
         })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent)
         */
@@ -97,7 +116,7 @@ class ZoneTelechargementParser {
 
     
     useBaseURL(url) {
-        this._ZTBaseURL(url)
+        this._ZTBaseURL = url
         return true
     }
 
@@ -114,7 +133,7 @@ class ZoneTelechargementParser {
             }
             return responseMovieList
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return {
                 status: false,
                 error: `${e}`,
@@ -130,7 +149,7 @@ class ZoneTelechargementParser {
             let responseMovieList = await this._parseMoviesFromSearchQuery(category, query, page)
             return responseMovieList
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return {
                 status: false,
                 error: `${e}`,
@@ -150,7 +169,7 @@ class ZoneTelechargementParser {
             error: `Wrong base URL provided`
         }
 
-        console.log("movieURL:",movieURL)
+        if(this._devMode) console.log("movieURL:",movieURL)
         
         let document = await this._getDOMElementFromURL(movieURL)
 
@@ -175,9 +194,9 @@ class ZoneTelechargementParser {
                     language: this._getMatchingGroups(x.getElementsByTagName("b")[1].textContent)[0],
                 }
         })
-        // console.log("version1:",otherversions_div)
-        // console.log("version2:",version_list_a)
-        // console.log("version3:",versions)
+        // if(this._devMode) console.log("version1:",otherversions_div)
+        // if(this._devMode) console.log("version2:",version_list_a)
+        // if(this._devMode) console.log("version3:",versions)
         
         let center_element = mainElement.getElementsByTagName("center")[0]
 
@@ -198,10 +217,10 @@ class ZoneTelechargementParser {
         let temp = [...center_element.childNodes]
         for(let i in temp) {
             let e = temp[i]
-            // console.log("e.nodeName",e.nodeName)
+            // if(this._devMode) console.log("e.nodeName",e.nodeName)
 
             if(e.nodeName == "img" && all_cutsElement_src.includes(e.getAttribute("src"))) { currentStep++ }
-            // console.log(`\n\n\n\n=======\n\n centerElements[${currentStep}]`,centerElements[currentStep])
+            // if(this._devMode) console.log(`\n\n\n\n=======\n\n centerElements[${currentStep}]`,centerElements[currentStep])
             centerElements[currentStep].push(e)
         }
         
@@ -230,7 +249,7 @@ class ZoneTelechargementParser {
         let temp2 = [...center_element.childNodes]
         for(let i in temp2) {
             let e = temp2[i]
-            // console.log("e.nodeName",e.nodeName)
+            // if(this._devMode) console.log("e.nodeName",e.nodeName)
 
             if(e.nodeName == "strong" && somef.anyWordInText(e.innerHTML, all_cutsElement_src2) ) { filmInfos_currentStep++ }
 
@@ -238,11 +257,11 @@ class ZoneTelechargementParser {
         }
 
         for(let i in filmInfosElements) {
-            console.log(filmInfosElements[i].map(x => x.outerHTML))
+            if(this._devMode) console.log(filmInfosElements[i].map(x => x.outerHTML))
         }
 
-        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
-        // console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
+        // if(this._devMode) console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
+        // if(this._devMode) console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
 
 
         
@@ -281,7 +300,7 @@ class ZoneTelechargementParser {
         for(let i in [...Object.keys(filmInfosElements_mapped)]) {
             let key = [...Object.keys(filmInfosElements_mapped)][i]
             
-            console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
+            if(this._devMode) console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
         }
 
 
@@ -317,7 +336,7 @@ class ZoneTelechargementParser {
             review: filmInfosElements_mapped["Critiques"] ? (getHashtagTextNumber(filmInfosElements_mapped["Critiques"], 0)?.textContent?.trim() ?? null) : null,
             trailer: filmInfosElements_mapped["Bande annonce"] ? (filmInfosElements_mapped["Bande annonce"].filter(x => {
                 try {
-                    // console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
+                    // if(this._devMode) console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
                     return x.getElementsByTagName("a")[0].getAttribute("href").indexOf("allocine") != -1
                 } catch(e) {
                     return false
@@ -327,15 +346,15 @@ class ZoneTelechargementParser {
             streamingLinks: null
         }
 
-        console.log("infos:",movieInfos)
+        if(this._devMode) console.log("infos:",movieInfos)
 
 
         // =============== SYNOPSIS ( centerElements[2] ) ===============
         
         /*
-        console.log("centerElements:",centerElements[2].map(x => { return x.nodeName.trim() }))
-        console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
-        console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
+        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.nodeName.trim() }))
+        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
+        if(this._devMode) console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
         */
 
 
@@ -357,7 +376,7 @@ class ZoneTelechargementParser {
         let temp3 = [...corpsElement.childNodes]
         for(let i in temp3) {
             let e = temp3[i]
-            // console.log("e.nodeName",e.nodeName)
+            // if(this._devMode) console.log("e.nodeName",e.nodeName)
 
             if(e.nodeName == "h2" && somef.anyWordInText(e.innerHTML, all_cutsElement_dl) ) { console.log("downloadLinks STEP +1"); downloadLinks_currentStep++ }
 
@@ -365,7 +384,7 @@ class ZoneTelechargementParser {
         }
 
         for(let i in downloadLinksElements) {
-            // console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
+            // if(this._devMode) console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
         }
 
         /*
@@ -388,7 +407,7 @@ class ZoneTelechargementParser {
             let temp4 = [...onlyDownloadLinksElement.childNodes]
             for(let i in temp4) {
                 let e = temp4[i]
-                // console.log(".nodeName",e.nodeName)
+                // if(this._devMode) console.log(".nodeName",e.nodeName)
                 if(e.nodeName == "#text") continue;
 
                 if(e.nodeName == "br" && !lastWasBr) {
@@ -401,12 +420,12 @@ class ZoneTelechargementParser {
             }
 
             for(let i in downloadLinksElements_dlprotect) {
-                // console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+                // if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
             }
 
 
             /*for(let i in downloadLinksElements_dlprotect) {
-                console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+                if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
             }*/
 
             let downloadLinksMapped = downloadLinksElements_dlprotect.filter(x => {

@@ -99,7 +99,7 @@ class ZoneTelechargementParser {
     }
 
     useBaseURL(url) {
-        this._ZTBaseURL(url)
+        this._ZTBaseURL = url
         return true
     }
 
@@ -484,3 +484,6 @@ let a = async () => {
     //ZT.search("films","transformer")
 }
 a()
+
+
+module.exports = new ZoneTelechargementParser()

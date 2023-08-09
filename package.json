@@ -27,7 +27,17 @@
     "free",
     "gratuit"
   ],
-  "author": "Sylicium",
+  "author": {
+    "name" : "Sylicium",
+    "email" : "contact@sylicium.fr",
+    "url" : "https://github.com/Sylicium/"
+  },
+  "contributors": [
+    {
+      "name": "Matthieu Evain",
+      "url": "https://www.evain.ovh/"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "axios": "^1.4.0",

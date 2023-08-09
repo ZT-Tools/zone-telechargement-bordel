@@ -1,13 +1,13 @@
 
 /**
- * @version 2.1.0 // 26/07/2023
+ * @version 2.1.6 // 09/08/2023
  * @author Sylicium
  * @description Module someFunction qui réunit plein de fonction utiles
  *
 */
 
 const fs = require("fs")
-
+const node_crypto = require('node:crypto');
 
 let config = require("../config")
 
@@ -41,6 +41,24 @@ function shuffle(list) {
     }
 }
 
+module.exports.randInt = randInt
+/**
+ * f() : Renvoie un nombre entier aléatoire entre min (inclu) et max (exclu)
+ * @param {Number} min - La nombre minimum (inclu)
+ * @param {Number} max - La nombre maximum (exclu)
+ */
+function randInt(min, max) {
+    return Math.floor(Math.random()*(max-min)+min)
+}
+module.exports.randFloat = randFloat
+/**
+ * f() : Renvoie un nombre flotant aléatoire entre min (inclu) et max (exclu)
+ * @param {Number} min - La nombre minimum (inclu)
+ * @param {Number} max - La nombre maximum (exclu)
+ */
+function randFloat(min, max) {
+    return Math.random()*(max-min)
+}
 
 module.exports.sum = sum
 /**
@@ -69,6 +87,17 @@ module.exports.genHex = genHex
 function genHex(length, capitalize=false) {
     let str = [...Array(length)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
     return (capitalize ? str.toUpperCase() : str.toLowerCase())
+}
+
+module.exports.randomString = randomString
+/**
+ * f() : Retourne une chaine aléatoire de la longueur voulue contenant des lettres minusules et majuscules ainsi que des chiffres
+ * @param {Number} length - Longueur de la chaine voulue
+ * @param {Boolean} list - Mettre la chaine en caractères majuscule
+ */
+function randomString(length, charList) {
+    charList = charList || "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
+    return [...Array(length)].map((x) => choice(charList)).join('');
 }
 
 module.exports.any = any
@@ -254,10 +283,58 @@ function isScamLinkScore(link) {
     
 }
 
+function createHash (inputString, hashType="sha256", digestFormat="hex") {
+    return node_crypto.createHash(hashType).update(inputString).digest(digestFormat);
+    // return createHash('sha256').update("bacon").digest('hex');
+}
+module.exports.createHash = createHash
+
 let _normalize = (str) => { return (`${str}`.normalize('NFKD').replace(/[^\w ]/g, '')).toLowerCase().replace(/\s+/g, ' ').trim() }
 module.exports._normalize = _normalize
 
+let _normalizeRegex = (str) => {
+    return `(${splitAndJoin(_normalize(str.toLowerCase().trim()), {
+        "\\": "\\\\", "|": "\\|", "/": "\\/",
+        "-": "\\-", "_": "\\_", "$": "\\$",
+        "[": "\\[", "]": "\\]", "(": "\\(",
+        ")": "\\)", "{": "\\{", "}": "\\}",
+        "?": "\\?", "*": "\\*", "+": "\\+",
+        ",": "\\,", "^": "\\^", ":": "\\:",
+        "<": "\\<", ">": "\\>", "'": "\\'",
+        '"': '\\"', "#": "\\#",
+
+        "à": "a", "á": "a", "â": "a", "ã": "a", "ä": "a", "å": "a",
+        "a": "[aàáâãäå]",
+
+        "è": "e", "é": "e", "ê": "e", "ë": "e",
+        "e": "[eèéêë]",
+
+        "ì": "i", "í": "i", "î": "i", "ï": "i",
+        "i": "[iìíîï]",
+
+        "ò": "o", "ó": "o", "ô": "o", "õ": "o", "ö": "o", "ø": "o",
+        "o": "[oòóôõöø]",
+        
+        "ù": "u", "ú": "u", "û": "u", "ü": "u",
+        "u": "[uùúûü]",
+
+        "ý": "y", "ÿ": "y",
+        "y": "[yýÿ]",
+
+        "ñ": "n", "n": "[nñ]",
+        "ç": "c", "c": "[cç]",
+        
+        "æ": "ae", "ae": "(ae|æ)",
+        "œ": "oe", "oe": "(oe|œ)",
+    })})`
+}
+
+let _normalizeListRegex = (list) => { return list.map(x => { return _normalizeRegex(x) }).join("|") }
+
 module.exports.capitalize = (str) => { return `${str[0].toUpperCase()}${str.slice(1)}` }
+
+function removeDuplicates(list) { return list.filter((x, i) => i === list.indexOf(x)) }
+module.exports.removeDuplicates = removeDuplicates
 
 module.exports.formatTime = formatTime
 function formatTime(millisecondes, format) {
@@ -428,6 +505,39 @@ class Emitter {
     }
 }
 module.exports.Emitter = Emitter
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+module.exports.sleep = sleep
+
+
+
+
+
+
+
+
+
+
+
+
+/*************** ☝ SomeFunctions core ☝ ***************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+/*******************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function parseSubZones(containerElement, callbackAddStep) {

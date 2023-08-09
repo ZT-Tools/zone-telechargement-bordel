@@ -4,12 +4,18 @@
   "description": "An API for zone-telechargement built from Scratch",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node index.js",
+    "test": "jest --testPathPattern=tests"
+  },
+  "jest": {
+    "rootDir": "./",
+    "modulePaths": [
+      "<rootDir>"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Sylicium/zone-telechargement-api"
+    "url": "git+https://github.com/Sylicium/zone-telechargement-api.git"
   },
   "keywords": [
     "zone",
@@ -36,5 +42,15 @@
     "node-svg2img": "^1.1.0",
     "ppfun-captcha": "^1.6.7",
     "socket.io": "^4.7.1"
+  },
+  "bugs": {
+    "url": "https://github.com/Sylicium/zone-telechargement-api/issues"
+  },
+  "homepage": "https://github.com/Sylicium/zone-telechargement-api#readme",
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2"
   }
 }

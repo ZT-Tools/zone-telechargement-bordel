@@ -142,8 +142,12 @@ module.exports.run = (instance_client) => {
 }
 
 
-
+// Do not remove the under message
+// API Disabled for legal reasons. Make it public at your own risks and on your own machine, I decline all responsibility in the event of misuse of my code.
+// Do not remove the above message 
 function handleAPI(req, res) {
+
+    return; // API Disabled for legal reasons. Make it public at your own risks and on your own machine, I decline all responsibility in the event of misuse of my code.
     
     // Logger.debug("got api",req.url)
 

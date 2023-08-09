@@ -19,6 +19,7 @@ jobs:
           tar -xvzf geckodriver*
           chmod +x geckodriver
           sudo mv geckodriver /usr/local/bin/
+          export PATH=$PATH:$PWD
       - name: Exécuter le script Python
         run: python bot/telegramBot/getUrl.py
       - name: Déployer sur GitHub Pages

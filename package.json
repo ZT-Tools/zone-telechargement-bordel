@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest --testPathPattern=tests"
+    "test": "jest --testPathPattern=tests --verbose"
   },
   "jest": {
     "rootDir": "./",

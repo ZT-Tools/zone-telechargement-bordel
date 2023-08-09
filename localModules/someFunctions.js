@@ -594,21 +594,21 @@ function mapNameParsedSubZones(containerElement, listOfCutTexts, callbackGetText
         let firstStrongText = callbackGetText(e)
         if(!firstStrongText) continue;
         
-        console.log("firstStrongText:",firstStrongText)
+        // console.log("firstStrongText:",firstStrongText)
 
         let the_key;
         let found_key = false
         for(let i in listOfCutTexts) {
-            console.log("listOfCutTexts[i].cutOn.toLowerCase():",listOfCutTexts[i].cutOn.toLowerCase())
+            // console.log("listOfCutTexts[i].cutOn.toLowerCase():",listOfCutTexts[i].cutOn.toLowerCase())
             if(firstStrongText.indexOf(listOfCutTexts[i].cutOn.toLowerCase()) != -1) {
                 the_key = listOfCutTexts[i].value
                 found_key = true
                 break;
             }
         }
-        console.log("the_key 1:", the_key, found_key)
+        // console.log("the_key 1:", the_key, found_key)
         if(!found_key && defaultKey) { the_key = defaultKey }
-        console.log("the_key 2:", the_key)
+        // console.log("the_key 2:", the_key)
 
         containerElement_mapped[`${the_key}`] = e
     }

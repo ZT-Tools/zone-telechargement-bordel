@@ -14,11 +14,11 @@ var somef = require('./someFunctions');
 var parser = new DomParser();
 
 class ZoneTelechargementParser {
-    constructor() {
+    constructor(devMode=false, axiosRequestTimeInBetween=300) {
         this._ZTBaseURL = `https://www.zone-telechargement.homes` 
         this._allCategories = [ "films", "series", "jeux", "musiques", "mangas", "ebooks", "autres-videos", "logiciels", "mobiles" ]
         this._lastAxiosRequestTimestamp = 0 // Do not edit this value. used as temp
-        this._axiosRequestTimeInBetween = 250 // Default: 250 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
+        this._axiosRequestTimeInBetween = axiosRequestTimeInBetween // Default: 300 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
         this._devMode = devMode;
     }
     
@@ -36,6 +36,14 @@ class ZoneTelechargementParser {
             return s
         }
     };
+    _setAxiosRequestTimeInBetween(value) {
+        if(typeof value != "number") throw new Error("Argument must be type of 'number'.")
+        this._axiosRequestTimeInBetween = value
+    }
+    _setDevMode(value) {
+        if(typeof value != "boolean") throw new Error("Argument must be type of 'boolean'.")
+        this._devMode = !!value
+    }
 
 
 
@@ -486,7 +494,7 @@ let ZT = new ZoneTelechargementParser()
 
 let a = async () => {
     
-    console.log(JSON.stringify(await ZT.getMovieDetails("8726"),null,4))
+    // console.log(JSON.stringify(await ZT.getMovieDetails("8726"),null,4))
     // ZT.getMovieDetails("42023")
     // console.log(await ZT.search("films","transformer"))
     //ZT.search("films","transformer")

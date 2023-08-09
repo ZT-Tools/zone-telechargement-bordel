@@ -1,10 +1,11 @@
 {
   "name": "zone-telechargement-api",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An API for zone-telechargement built from Scratch",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "node app.js",
     "test": "jest --testPathPattern=tests --verbose"
   },
   "jest": {

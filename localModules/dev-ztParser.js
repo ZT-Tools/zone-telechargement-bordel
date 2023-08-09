@@ -17,6 +17,9 @@ class ZoneTelechargementParser {
     constructor() {
         this._ZTBaseURL = `https://www.zone-telechargement.homes` 
         this._allCategories = [ "films", "series", "jeux", "musiques", "mangas", "ebooks", "autres-videos", "logiciels", "mobiles" ]
+        this._lastAxiosRequestTimestamp = 0 // Do not edit this value. used as temp
+        this._axiosRequestTimeInBetween = 250 // Default: 250 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
+        this._devMode = devMode;
     }
     
     _getBaseURL() { return this._ZTBaseURL }
@@ -29,7 +32,7 @@ class ZoneTelechargementParser {
             }
             return a;
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return s
         }
     };
@@ -44,6 +47,11 @@ class ZoneTelechargementParser {
     }
 
     async _getDOMElementFromURL(url) {
+        if(Date.now()-this._lastAxiosRequestTimestamp < this._axiosRequestTimeInBetween) {
+            await somef.sleep(this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
+        }
+        this._lastAxiosRequestTimestamp = Date.now()
+
         let response = await axios.get(url)
         let document = parser.parseFromString(response.data)
         return document
@@ -90,7 +98,7 @@ class ZoneTelechargementParser {
         }
 
         /*
-        console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
+        if(this._devMode) console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
             return x.getAttribute("class") == "cover_infos_title"
         })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent)
         */
@@ -112,11 +120,11 @@ class ZoneTelechargementParser {
                 searchPage++
                 tempMovieList = await this._parseMoviesFromSearchQuery(category, query, searchPage)
                 responseMovieList = responseMovieList.concat(tempMovieList)
-                console.log(`Added ${tempMovieList.length} movies from page ${searchPage}`)
+                if(this._devMode) console.log(`Added ${tempMovieList.length} movies from page ${searchPage}`)
             }
             return responseMovieList
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return {
                 status: false,
                 error: `${e}`,
@@ -132,7 +140,7 @@ class ZoneTelechargementParser {
             let responseMovieList = await this._parseMoviesFromSearchQuery(category, query, page)
             return responseMovieList
         } catch(e) {
-            console.log(e)
+            if(this._devMode) console.log(e)
             return {
                 status: false,
                 error: `${e}`,
@@ -178,9 +186,9 @@ class ZoneTelechargementParser {
                     }
             })
         }
-        // console.log("version1:",otherversions_div)
-        // console.log("version2:",version_list_a)
-        // console.log("version3:",versions)
+        // if(this._devMode) console.log("version1:",otherversions_div)
+        // if(this._devMode) console.log("version2:",version_list_a)
+        // if(this._devMode) console.log("version3:",versions)
         
         let center_element = mainElement.getElementsByTagName("center")[0]
 
@@ -201,17 +209,17 @@ class ZoneTelechargementParser {
         let temp = [...center_element.childNodes]
         for(let i in temp) {
             let e = temp[i]
-            // console.log("e.nodeName",e.nodeName)
+            // if(this._devMode) console.log("e.nodeName",e.nodeName)
 
             if(e.nodeName == "img" && all_cutsElement_src.includes(e.getAttribute("src"))) { currentStep++ }
-            // console.log(`\n\n\n\n=======\n\n centerElements[${currentStep}]`,centerElements[currentStep])
+            // if(this._devMode) console.log(`\n\n\n\n=======\n\n centerElements[${currentStep}]`,centerElements[currentStep])
             centerElements[currentStep].push(e)
         }
         
         
         // =============== FILM INFOS ( centerElements[1] ) ===============
 
-        console.log("center_element",center_element.outerHTML)
+        if(this._devMode) console.log("center_element",center_element.outerHTML)
         let filmInfosElements = somef.parseSubZones(center_element, (e) => { return e.nodeName == "strong" && somef.anyWordInText(e.innerHTML, [
             `Origine`,
             `Durée`,
@@ -224,10 +232,10 @@ class ZoneTelechargementParser {
             `Bande annonce`
         ])})
 
-        // console.log("centerElements[1] outerHTML:",centerElements[1].map(x => { return x.outerHTML.trim() }))
-        // console.log("centerElements[1] nodeName :",centerElements[1].map(x => { return x.nodeName }))
+        // if(this._devMode) console.log("centerElements[1] outerHTML:",centerElements[1].map(x => { return x.outerHTML.trim() }))
+        // if(this._devMode) console.log("centerElements[1] nodeName :",centerElements[1].map(x => { return x.nodeName }))
 
-        console.log("centerElements[3]",centerElements[3].map(x => x.outerHTML))
+        if(this._devMode) console.log("centerElements[3]",centerElements[3].map(x => x.outerHTML))
 
         let parsedZone = somef.mapNameParsedSubZones(
             filmInfosElements,
@@ -249,10 +257,10 @@ class ZoneTelechargementParser {
             "none"
         )
 
-        console.log("parsedZone:",parsedZone)
+        if(this._devMode) console.log("parsedZone:",parsedZone)
 
         for(let i in parsedZone) {
-            console.log(`parsedZone[${i}]`, parsedZone[i].map(x => x.outerHTML))
+            if(this._devMode) console.log(`parsedZone[${i}]`, parsedZone[i].map(x => x.outerHTML))
         }
 
 
@@ -294,7 +302,7 @@ class ZoneTelechargementParser {
         for(let i in [...Object.keys(filmInfosElements_mapped)]) {
             let key = [...Object.keys(filmInfosElements_mapped)][i]
             
-            console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
+            if(this._devMode) console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
         }
 
 
@@ -336,7 +344,7 @@ class ZoneTelechargementParser {
             review: filmInfosElements_mapped["Critiques"] ? (getHashtagTextNumber(filmInfosElements_mapped["Critiques"], 0)?.textContent?.trim() ?? null) : null,
             trailer: filmInfosElements_mapped["Bande annonce"] ? (filmInfosElements_mapped["Bande annonce"].filter(x => {
                 try {
-                    // console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
+                    // if(this._devMode) console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
                     return x.getElementsByTagName("a")[0].getAttribute("href").indexOf("allocine") != -1
                 } catch(e) {
                     return false
@@ -346,18 +354,18 @@ class ZoneTelechargementParser {
             streamingLinks: null
         }
 
-        // console.log("infos:",movieInfos)
+        // if(this._devMode) console.log("infos:",movieInfos)
 
 
-        // console.log("corpsElement:",corpsElement.outerHTML)
+        // if(this._devMode) console.log("corpsElement:",corpsElement.outerHTML)
 
 
         // =============== SYNOPSIS ( centerElements[2] ) ===============
         
         /*
-        console.log("centerElements:",centerElements[2].map(x => { return x.nodeName.trim() }))
-        console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
-        console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
+        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.nodeName.trim() }))
+        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
+        if(this._devMode) console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
         */
 
         
@@ -379,15 +387,15 @@ class ZoneTelechargementParser {
         let temp3 = [...corpsElement.childNodes]
         for(let i in temp3) {
             let e = temp3[i]
-            // console.log("e.nodeName",e.nodeName)
+            // if(this._devMode) console.log("e.nodeName",e.nodeName)
 
-            if(e.nodeName == "h2" && somef.anyWordInText(e.innerHTML, all_cutsElement_dl) ) { console.log("downloadLinks STEP +1"); downloadLinks_currentStep++ }
+            if(e.nodeName == "h2" && somef.anyWordInText(e.innerHTML, all_cutsElement_dl) ) { if(this._devMode) console.log("downloadLinks STEP +1"); downloadLinks_currentStep++ }
 
             downloadLinksElements[downloadLinks_currentStep].push(e)
         }
 
         for(let i in downloadLinksElements) {
-            // console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
+            // if(this._devMode) console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
         }
 
         /*
@@ -410,7 +418,7 @@ class ZoneTelechargementParser {
             let temp4 = [...onlyDownloadLinksElement.childNodes]
             for(let i in temp4) {
                 let e = temp4[i]
-                // console.log(".nodeName",e.nodeName)
+                // if(this._devMode) console.log(".nodeName",e.nodeName)
                 if(e.nodeName == "#text") continue;
 
                 if(e.nodeName == "br" && !lastWasBr) {
@@ -423,12 +431,12 @@ class ZoneTelechargementParser {
             }
 
             for(let i in downloadLinksElements_dlprotect) {
-                // console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+                // if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
             }
 
 
             /*for(let i in downloadLinksElements_dlprotect) {
-                console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
+                if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
             }*/
 
             let downloadLinksMapped = downloadLinksElements_dlprotect.filter(x => {
@@ -465,7 +473,7 @@ class ZoneTelechargementParser {
             otherVersions: versions,
         }
 
-        // console.log("backPayload:",backPayload)
+        // if(this._devMode) console.log("backPayload:",backPayload)
 
         return backPayload
 

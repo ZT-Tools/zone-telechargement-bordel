@@ -7,19 +7,22 @@
  */
 
 const axios = require("axios")
-
-var DomParser = require('dom-parser');
 const cheerio = require("cheerio");
+require('dotenv').config();
+
+const moviesDb = process.env.MOVIESDB_API_KEY;
+
 var somef = require('./someFunctions');
-var parser = new DomParser();
 
 class ZoneTelechargementParser {
-    constructor(devMode=false, axiosRequestTimeInBetween=300) {
+    constructor(devMode=false,timeStamp=false, axiosRequestTimeInBetween=300) {
         this._ZTBaseURL = `https://www.zone-telechargement.homes` 
         this._allCategories = [ "films", "series", "jeux", "musiques", "mangas", "ebooks", "autres-videos", "logiciels", "mobiles" ]
         this._lastAxiosRequestTimestamp = 0 // Do not edit this value. used as temp
         this._axiosRequestTimeInBetween = axiosRequestTimeInBetween // Default: 300 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
         this._devMode = devMode;
+        this._devMode && console.log("ztParser: Dev mode enabled.")
+        this._timeStamp = timeStamp
     }
     
     _getBaseURL() { return this._ZTBaseURL }
@@ -53,7 +56,7 @@ class ZoneTelechargementParser {
     }
 
     async _getDOMElementFromURL(url) {
-        if (this._devMode){
+        if (this._timeStamp){
             console.log("========================================================")
             console.log("A:",Date.now()-this._lastAxiosRequestTimestamp)
             console.log("B:",this._axiosRequestTimeInBetween)
@@ -69,11 +72,9 @@ class ZoneTelechargementParser {
         return cheerio.load(response.data);
     }
 
-
     async _parseMoviesFromSearchQuery(category, query, page) {
         const payloadURL = this._getPayloadURLFromQuery(category, query, page);
         const $ = await this._getDOMElementFromURL(payloadURL);
-
     
         const movieList_elements = $("#dle-content .cover_global");
         const responseMovieList = [];
@@ -135,8 +136,6 @@ class ZoneTelechargementParser {
         }
     }
 
-    
-
     async search(category, query, page) {
         try {
             let responseMovieList = await this._parseMoviesFromSearchQuery(category, query, page)
@@ -152,314 +151,70 @@ class ZoneTelechargementParser {
     }
 
 
-    async getMovieDetails(movieID) {
 
-
-        let movieURL = this._getBaseURL() + `?p=film&id=${movieID}` // FILM sans S car page de description de UN seul film
-
-        if(!movieURL.startsWith(this._getBaseURL())) return {
-            status: false,
-            error: `Wrong base URL provided`
-        }
-
-        if(this._devMode) console.log("movieURL:",movieURL)
-        
-        let document = await this._getDOMElementFromURL(movieURL)
-
-        let corpsElement = (
-            document.getElementById("dle-content")
-            .getElementsByClassName("base")[0]
-            .getElementsByClassName("maincont")[0]
-            .getElementsByClassName("corps")[0]
-        );
-        let mainElement = (
-            corpsElement
-            .getElementsByTagName("div")[0]
-        );
-
-
-        let otherversions_div = mainElement.getElementsByClassName("otherversions")[0]
-        let version_list_a = [...otherversions_div.getElementsByTagName("a")]
-        let versions = version_list_a.map(x => {
-                return {
-                    url: this._getBaseURL() + x.getAttribute("href"),
-                    quality: x.getElementsByTagName("b")[0].textContent,
-                    language: this._getMatchingGroups(x.getElementsByTagName("b")[1].textContent)[0],
-                }
-        })
-        // if(this._devMode) console.log("version1:",otherversions_div)
-        // if(this._devMode) console.log("version2:",version_list_a)
-        // if(this._devMode) console.log("version3:",versions)
-        
-        let center_element = mainElement.getElementsByTagName("center")[0]
-
-
-        let centerElements = [
-            [], [], [], [], [], [], [], [], [], [], [], [], [], []
-        ]
-
-        let all_cutsElement_src = [
-            `/templates/zone/images/infos_film.png`,
-            `/templates/zone/images/synopsis.png`,
-            `/templates/zone/images/infos_upload.png`,
-            `/templates/zone/images/liens.png`,
-        ]
-
-        let currentStep = 0
-
-        let temp = [...center_element.childNodes]
-        for(let i in temp) {
-            let e = temp[i]
-            // if(this._devMode) console.log("e.nodeName",e.nodeName)
-
-            if(e.nodeName == "img" && all_cutsElement_src.includes(e.getAttribute("src"))) { currentStep++ }
-            // if(this._devMode) console.log(`\n\n\n\n=======\n\n centerElements[${currentStep}]`,centerElements[currentStep])
-            centerElements[currentStep].push(e)
-        }
-        
-        
-        // =============== FILM INFOS ( centerElements[1] ) ===============
-
-        
-        let filmInfosElements = [
-            [], [], [], [], [], [], [], [], [], [], [], [], [], []
-        ]
-
-        let all_cutsElement_src2 = [
-            `Origine`,
-            `Durée`,
-            `Réalisation`,
-            `Acteur`,
-            `Genre`,
-            `Année de production`,
-            `Titre original`,
-            `Critiques`,
-            `Bande annonce`
-        ]
-
-        let filmInfos_currentStep = 0
-
-        let temp2 = [...center_element.childNodes]
-        for(let i in temp2) {
-            let e = temp2[i]
-            // if(this._devMode) console.log("e.nodeName",e.nodeName)
-
-            if(e.nodeName == "strong" && somef.anyWordInText(e.innerHTML, all_cutsElement_src2) ) { filmInfos_currentStep++ }
-
-            filmInfosElements[filmInfos_currentStep].push(e)
-        }
-
-        for(let i in filmInfosElements) {
-            if(this._devMode) console.log(filmInfosElements[i].map(x => x.outerHTML))
-        }
-
-        // if(this._devMode) console.log("centerElements[1]:",centerElements[1].map(x => { return x.outerHTML.trim() }))
-        // if(this._devMode) console.log("centerElements[1]:",centerElements[1].map(x => { return x.nodeName }))
-
-
-        
-        
-        let filmInfosElements_mapped = {
-            /*"Origine": [],
-            "Durée": [],
-            "Réalisation": [],
-            "Acteur": [],
-            "Genre": [],
-            "Année de production": [],
-            "Titre original": [],
-            "Critiques": [],
-            "Bande annonce": [],*/
-        }
-
-        for(let i in filmInfosElements) {
-            let e = filmInfosElements[i]
-            let firstStrongText = e.filter(x => { return x.nodeName == "strong"})[0]?.getElementsByTagName("u")[0]?.textContent?.toLowerCase()?.trim() ?? null
-            if(!firstStrongText) continue;
-
-            let the_key;
-            if(firstStrongText.includes("origine")) the_key = "Origine"
-            else if(firstStrongText.includes("durée")) the_key = "Durée"
-            else if(firstStrongText.includes("réalisation")) the_key = "Réalisation"
-            else if(firstStrongText.includes("acteur")) the_key = "Acteur"
-            else if(firstStrongText.includes("genre")) the_key = "Genre"
-            else if(firstStrongText.includes("année")) the_key = "Année de production"
-            else if(firstStrongText.includes("titre")) the_key = "Titre original"
-            else if(firstStrongText.includes("critiques")) the_key = "Critiques"
-            else if(firstStrongText.includes("bande")) the_key = "Bande annonce"
-            filmInfosElements_mapped[the_key] = e
-        }
-
-
-        for(let i in [...Object.keys(filmInfosElements_mapped)]) {
-            let key = [...Object.keys(filmInfosElements_mapped)][i]
-            
-            if(this._devMode) console.log(`filmInfosElements_mapped[${key}]:`,filmInfosElements_mapped[key].map(x => x.outerHTML))
-        }
-
-
-
-
-        let getHashtagTextNumber = (elementContainer, n) => {
-            return elementContainer.filter(x => { return x.nodeName == "#text"})[n] ?? false
-        }
-
-        let movieInfos = {
-            name: filmInfosElements[7].filter(x => { return x.nodeName =="#text" })[0].textContent.trim(),
-            synopsis: centerElements[2].filter(x => { return x.nodeName == "em" })[0].textContent.trim(),
-            fileName: [...corpsElement.getElementsByTagName("center")].filter(x => {
-                return (x.getElementsByTagName("font")[0]?.getAttribute("color") == "red")
-            })[0]?.textContent.trim() ?? null,
-            origin: filmInfosElements_mapped["Origine"] ? (getHashtagTextNumber(filmInfosElements_mapped["Origine"], 0)?.textContent?.trim() ?? null) : null,
-            duration: filmInfosElements_mapped["Durée"] ? (getHashtagTextNumber(filmInfosElements_mapped["Durée"], 0)?.textContent?.trim() ?? null) : null,
-            director: this._getBaseURL() + encodeURI(centerElements[1].filter(x => { return x.nodeName == "a"})[0].getAttribute("href")),
-            actors: filmInfosElements[4].filter(x => { return x.nodeName == "a" }).map(x => {
-                return {
-                    name: x.textContent,
-                    url: this._getBaseURL() + encodeURI(x.getAttribute("href"))
-                }
-            }),
-            genres: filmInfosElements[5].filter(x => { return x.nodeName == "a" }).map(x => {
-                return {
-                    name: x.textContent,
-                    url: this._getBaseURL() + encodeURI(x.getAttribute("href"))
-                }
-            }),
-            productionYear: filmInfosElements_mapped["Année de production"] ? (getHashtagTextNumber(filmInfosElements_mapped["Année de production"], 0)?.textContent?.trim() ?? null) : null,
-            originalTitle: filmInfosElements_mapped["Titre original"] ? (getHashtagTextNumber(filmInfosElements_mapped["Titre original"], 0)?.textContent?.trim() ?? null) : null,
-            review: filmInfosElements_mapped["Critiques"] ? (getHashtagTextNumber(filmInfosElements_mapped["Critiques"], 0)?.textContent?.trim() ?? null) : null,
-            trailer: filmInfosElements_mapped["Bande annonce"] ? (filmInfosElements_mapped["Bande annonce"].filter(x => {
-                try {
-                    // if(this._devMode) console.log("x.getAttribute('href'):",x.getElementsByTagName("a")[0].getAttribute("href"))
-                    return x.getElementsByTagName("a")[0].getAttribute("href").indexOf("allocine") != -1
-                } catch(e) {
-                    return false
-                }
-            })[0]?.getElementsByTagName("a")[0]?.getAttribute("href")?.trim() ?? null) : null,
-            downloadLinks: null,
-            streamingLinks: null
-        }
-
-        if(this._devMode) console.log("infos:",movieInfos)
-
-
-        // =============== SYNOPSIS ( centerElements[2] ) ===============
-        
+    async getMovieDetails(movieTitle) {
         /*
-        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.nodeName.trim() }))
-        if(this._devMode) console.log("centerElements:",centerElements[2].map(x => { return x.outerHTML.trim() }))
-        if(this._devMode) console.log("tagName:",centerElements[2].filter(x => { return x.nodeName == "em" }))
-        */
-
-
+        Example:
         
-        // =============== LIENS DE TELECHARGEMENT ===============
+        getMovieDetails:  {
+            adult: false,
+            backdrop_path: '/cyecB7godJ6kNHGONFjUyVN9OX5.jpg',
+            genre_ids: [ 28, 878, 12 ],
+            id: 1726,
+            original_language: 'en',
+            original_title: 'Iron Man',
+            overview: 'After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.',
+            popularity: 76.266,
+            poster_path: '/78lPtwv72eTNqFW9COBYI0dWDJa.jpg',
+            release_date: '2008-04-30',
+            title: 'Iron Man',
+            video: false,
+            vote_average: 7.638,
+            vote_count: 24683
+        }*/
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
+                params: {
+                    api_key: moviesDb,
+                    query: movieTitle,
+                },
+            });
+    
+            const imgUrl = "https://image.tmdb.org/t/p/w780";
+    
+            const genresListResponse = await axios.get(`https://api.themoviedb.org/3/genre/movie/list`, {
+                params: {
+                    api_key: moviesDb,
+                },
+            });
+            const genresList = genresListResponse.data.genres;
+    
+            const movieDetails = response.data.results[0];
 
-        
-        let downloadLinksElements = [
-            [], [], [], [], [], [], [], [], [], [], [], [], [], []
-        ]
-
-        let all_cutsElement_dl = [
-            `Liens De Téléchargement`,
-            `Liens De Streaming`
-        ]
-
-        let downloadLinks_currentStep = 0
-
-        let temp3 = [...corpsElement.childNodes]
-        for(let i in temp3) {
-            let e = temp3[i]
-            // if(this._devMode) console.log("e.nodeName",e.nodeName)
-
-            if(e.nodeName == "h2" && somef.anyWordInText(e.innerHTML, all_cutsElement_dl) ) { console.log("downloadLinks STEP +1"); downloadLinks_currentStep++ }
-
-            downloadLinksElements[downloadLinks_currentStep].push(e)
+            const genreNames = movieDetails.genre_ids.map(id => {
+                const genre = genresList.find(genre => genre.id === id);
+                return genre ? genre.name : '';
+            });
+    
+            const data = {
+                title: movieDetails.original_title,
+                original_language: movieDetails.original_language,
+                description: movieDetails.overview,
+                poster: imgUrl + movieDetails.poster_path,
+                release_date: movieDetails.release_date,
+                genres: genreNames,
+            };
+    
+            return data;
+        } catch (error) {
+            console.error('Erreur lors de la requête :', error);
+            return null;
         }
-
-        for(let i in downloadLinksElements) {
-            // if(this._devMode) console.log(`downloadLinksElements[${i}]:`, downloadLinksElements[i].map(x => x.outerHTML))
-        }
-
-        /*
-        downloadLinksElements[1] : Liens De téléchargement
-        downloadLinksElements[2] : Liens De Streaming
-
-        */
-
-        // ===================== LIENS DE TELECHARGEMENT only  ========================
-
-
-        function parseDownloadLinks(downloadLinksElements_number) {
-            let onlyDownloadLinksElement = downloadLinksElements_number.filter(x => { return x.getAttribute("id") == "news-id-23557" })[0].getElementsByClassName("postinfo")[0]
-            let downloadLinksElements_dlprotect = [
-                [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
-            ]
-            let downloadLinks_dlprotect_currentStep = 0
-            let lastWasBr = false
-
-            let temp4 = [...onlyDownloadLinksElement.childNodes]
-            for(let i in temp4) {
-                let e = temp4[i]
-                // if(this._devMode) console.log(".nodeName",e.nodeName)
-                if(e.nodeName == "#text") continue;
-
-                if(e.nodeName == "br" && !lastWasBr) {
-                    downloadLinks_dlprotect_currentStep++
-                    lastWasBr = true
-                    continue;
-                }
-                lastWasBr = false                
-                downloadLinksElements_dlprotect[downloadLinks_dlprotect_currentStep].push(e)
-            }
-
-            for(let i in downloadLinksElements_dlprotect) {
-                // if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
-            }
-
-
-            /*for(let i in downloadLinksElements_dlprotect) {
-                if(this._devMode) console.log(`downloadLinksElements_dlprotect[${i}]:`, downloadLinksElements_dlprotect[i].map(x => x.outerHTML))
-            }*/
-
-            let downloadLinksMapped = downloadLinksElements_dlprotect.filter(x => {
-                return x.filter(x => x.nodeName == "b").length == 2
-            }).map(x => {
-                return {
-                    service: x.filter(x => x.nodeName == "b")[0].textContent.trim(),
-                    url: x.filter(x => x.nodeName == "b")[1].getElementsByTagName("a")[0].getAttribute("href").trim(),
-                }
-            })
-            return downloadLinksMapped
-        }
-
-        movieInfos.downloadLinks = parseDownloadLinks(downloadLinksElements[1])
-
-        // ===================== LIENS DE TELECHARGEMENT only  ========================
-
-        movieInfos.streamingLinks = parseDownloadLinks(downloadLinksElements[2])
-
-        // ===================== ======================== ========================
-        
-
-
-
-
-
-        let backPayload = {
-            movieInfos: movieInfos,
-            otherVersions: versions,
-        }
-
-        // console.log("backPayload:",backPayload)
-
-        return backPayload
-
     }
-
-}
+    
+    
+}    
 
 let ZT = new ZoneTelechargementParser()
-
-// await ZT.search("star wars")
 
 module.exports = new ZoneTelechargementParser()

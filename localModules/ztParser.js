@@ -9,6 +9,7 @@
 const axios = require("axios")
 
 var DomParser = require('dom-parser');
+const cheerio = require("cheerio");
 var somef = require('./someFunctions');
 var parser = new DomParser();
 
@@ -52,81 +53,60 @@ class ZoneTelechargementParser {
     }
 
     async _getDOMElementFromURL(url) {
-        // console.log("========================================================")
-        // console.log("A:",Date.now()-this._lastAxiosRequestTimestamp)
-        // console.log("B:",this._axiosRequestTimeInBetween)
-        // console.log("C:",this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
-        // console.log("--------------------------------------------------------")
-        if(Date.now()-this._lastAxiosRequestTimestamp < this._axiosRequestTimeInBetween) {
-            await somef.sleep(this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
+        if (this._devMode){
+            console.log("========================================================")
+            console.log("A:",Date.now()-this._lastAxiosRequestTimestamp)
+            console.log("B:",this._axiosRequestTimeInBetween)
+            console.log("C:",this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
+            console.log("--------------------------------------------------------")
         }
-        this._lastAxiosRequestTimestamp = Date.now()
+        if (Date.now() - this._lastAxiosRequestTimestamp < this._axiosRequestTimeInBetween) {
+            await somef.sleep(this._axiosRequestTimeInBetween - (Date.now() - this._lastAxiosRequestTimestamp));
+        }
+        this._lastAxiosRequestTimestamp = Date.now();
 
-        let response = await axios.get(url)
-        let document = parser.parseFromString(response.data)
-        return document
+        const response = await axios.get(url);
+        return cheerio.load(response.data);
     }
 
 
     async _parseMoviesFromSearchQuery(category, query, page) {
+        const payloadURL = this._getPayloadURLFromQuery(category, query, page);
+        const $ = await this._getDOMElementFromURL(payloadURL);
 
-        let payloadURL = this._getPayloadURLFromQuery(category, query, page)
-
-        let document = await this._getDOMElementFromURL(payloadURL)
-
-        let movieList_elements = [...document.getElementById("dle-content").childNodes].filter(x => { return x.getAttribute("class") == "cover_global" })
-
-        let responseMovieList = []
-
-        if(movieList_elements.length == 0) { return responseMovieList }
-
-        for(let i in movieList_elements) {
-            let elem = movieList_elements[i]
-
-            let the_url = this._getBaseURL() + [...elem.getElementsByTagName("div")].filter(x => {
-                return x.getAttribute("class") == "cover_infos_title"
-            })[0].getElementsByTagName("a")[0].getAttribute("href")
-
-
-            // if(this._devMode) console.log("\n\nDOM: ", [...elem.getElementsByTagName("div")].map(x => x.innerHTML),"\n\n");
-
-            let detail_release = [...elem.getElementsByClassName("cover_infos_global")]
-            .map(x => {
-                const matches = x.innerHTML.match(/<b>(.*?)<\/b>/g);
-                if (matches) {
-                    return matches.map(match => match.match(/<b>(.*?)<\/b>/)[1]);
-                }
-                return [];
-            }).reduce((acc, values) => acc.concat(values), []);
-
-            // if(this._devMode) console.log("detail_release: ", detail_release)
-
-            let publishDate = new Date(elem.getElementsByTagName("time")[0].textContent)
-            
-            let movieDatas = {
-                "title": [...elem.getElementsByTagName("div")].filter(x => {
-                    return x.getAttribute("class") == "cover_infos_title"
-                })[0].getElementsByTagName("a")[0].textContent,
-                "url": the_url,
-                "id": the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
-                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].map(x => x.getAttribute("src"))[0],
-                "quality": detail_release[0],
-                "language": detail_release[1].slice(1, -1),
-                "publishedOn": publishDate,
-                "publishedTimestamp": publishDate.getTime(),
-            }
-            responseMovieList.push(movieDatas)
+    
+        const movieList_elements = $("#dle-content .cover_global");
+        const responseMovieList = [];
+    
+        if (movieList_elements.length === 0) {
+            return responseMovieList;
         }
+    
+        movieList_elements.each((index, element) => {
+            const elem = $(element);
+    
+            const titleAnchor = elem.find(".cover_infos_title a");
+            const the_url = this._getBaseURL() + titleAnchor.attr("href");
+    
+            const detail_release = elem.find(".cover_infos_global .detail_release");
 
-        /*
-        if(this._devMode) console.log("aaaaa:",[...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-            return x.getAttribute("class") == "cover_infos_title"
-        })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent)
-        */
-
-        return responseMovieList
+            const publishDate = new Date(elem.find("time").text());
+    
+            const movieDatas = {
+                title: titleAnchor.text(),
+                url: the_url,
+                id: the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
+                image: this._getBaseURL() + elem.find("img").attr("src"),
+                quality: detail_release.find("span:eq(0)").text(),
+                language: detail_release.find("span:eq(1)").text(),
+                publishedOn: publishDate,
+                publishedTimestamp: publishDate.getTime(),
+            };
+            responseMovieList.push(movieDatas);
+        });
+    
+        return responseMovieList;
     }
-
     
     useBaseURL(url) {
         this._ZTBaseURL = url

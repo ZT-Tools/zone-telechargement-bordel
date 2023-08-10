@@ -85,22 +85,32 @@ class ZoneTelechargementParser {
                 return x.getAttribute("class") == "cover_infos_title"
             })[0].getElementsByTagName("a")[0].getAttribute("href")
 
+            // if(this._devMode) console.log("\n\nDOM: ", [...elem.getElementsByTagName("div")].map(x => x.innerHTML),"\n\n");
+
+            let detail_release = [...elem.getElementsByClassName("cover_infos_global")]
+            .map(x => {
+                const matches = x.innerHTML.match(/<b>(.*?)<\/b>/g);
+                if (matches) {
+                    return matches.map(match => match.match(/<b>(.*?)<\/b>/)[1]);
+                }
+                return [];
+            }).reduce((acc, values) => acc.concat(values), []);
+
+            // if(this._devMode) console.log("detail_release: ", detail_release)
+
+            let publishDate = new Date(elem.getElementsByTagName("time")[0].textContent)
+            
             let movieDatas = {
                 "title": [...elem.getElementsByTagName("div")].filter(x => {
                     return x.getAttribute("class") == "cover_infos_title"
                 })[0].getElementsByTagName("a")[0].textContent,
                 "url": the_url,
                 "id": the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
-                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].filter(x => {
-                    return x.getAttribute("class") == "mainimg"
-                })[0].src,
-                "quality": [...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                    return x.getAttribute("class") == "cover_infos_title"
-                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[0].textContent,
-                "language": this._getMatchingGroups([...movieList_elements[2].getElementsByTagName("div")].filter(x => {
-                    return x.getAttribute("class") == "cover_infos_title"
-                })[0].getElementsByClassName("detail_release")[0].getElementsByTagName("b")[1].textContent)[0],
-                "publishedOn": new Date(elem.getElementsByTagName("time")[0].textContent)
+                "image": this._getBaseURL() + [...elem.getElementsByTagName("img")].map(x => x.getAttribute("src"))[0],
+                "quality": detail_release[0],
+                "language": detail_release[1].slice(1, -1),
+                "publishedOn": publishDate,
+                "publishedTimestamp": publishDate.getTime(),
             }
             responseMovieList.push(movieDatas)
         }

@@ -1,4 +1,7 @@
 
+
+
+const somef = require("../localModules/someFunctions")
 const ZTP = require("../localModules/dev-ztParser")
 ZTP._setAxiosRequestTimeInBetween(400)
 ZTP._setDevMode(false)
@@ -55,7 +58,7 @@ for(let i in categories) {
 
     for(let i in testedMovies) {
 
-      let s1 = await ZTP.search("films",testedMovies[i])
+      let s1 = (await ZTP.search("films",testedMovies[i]))[0]
 
       /* object.title */
       expect(s1.title).not.toBeUndefined()
@@ -93,7 +96,8 @@ for(let i in categories) {
         'HDLIGHT',
         '4K',
         'WEBRIP',
-        'HDRIP'
+        'HDRIP',
+        'DVDRIP'
       ]
       expect(somef.anyWordInText(s1.quality, all_quality, false)).toBe(true)
 

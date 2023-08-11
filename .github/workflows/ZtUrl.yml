@@ -20,9 +20,11 @@ jobs:
         run: |
           pip install requests beautifulsoup4
 
-      - name: Get URL
+      - name: Run Python script
         run: |
-          python -c 'from getUrl import get_url; print(get_url())' > url.txt
+          OUTPUT=$(python -c 'import requests; from bs4 import BeautifulSoup; print(BeautifulSoup(requests.get("https://t.me/ZT_officiel").text, "html.parser").find("div", class_="tgme_page_title").text)')
+          echo "Output: $OUTPUT"
+        
 
       - name: Create JSON file
         run: |

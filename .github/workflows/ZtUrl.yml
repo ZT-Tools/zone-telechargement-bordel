@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Get HTML
         run: |
-          HTML_CONTENT=$(curl -s https://t.me/ZT_officiel)
+          HTML_CONTENT=$(curl -v -s https://t.me/ZT_officiel)
           echo "$HTML_CONTENT" > page.html
         shell: bash

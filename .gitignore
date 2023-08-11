@@ -1,5 +1,12 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-.env
-node_modules/*
-logs/*
+# Logs
+logs
 *.log
+
+# Environment variables
+.env

@@ -1,16 +1,38 @@
-name: Get HTML from Web Page
+name: Create JSON file with URL
 on:
   push:
     branches:
       - main
 
 jobs:
-  get_html:
+  create_json:
     runs-on: ubuntu-latest
     steps:
-      - name: Get HTML
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
         run: |
-          HTML_CONTENT=$(curl -v -s https://t.me/ZT_officiel)
-          echo "HTML: $HTML_CONTENT"
-          TITLE=$(echo "$HTML_CONTENT" | grep -oP '<div class="tgme_page_title"[^>]*><span dir="auto">([^<]+)</span></div>' | sed -n 's/.*<span dir="auto">\([^<]*\)<\/span><\/div>/\1/p')
-          echo "Title: $TITLE"
+          pip install requests beautifulsoup4
+
+      - name: Get URL
+        run: |
+          python -c 'from getUrl import get_url; print(get_url())' > url.txt
+
+      - name: Create JSON file
+        run: |
+          URL=$(cat url.txt)
+          echo "{\"url\": \"$URL\"}" > url.json
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          force_orphan: true

@@ -2,7 +2,7 @@
  * @name ztParser
  * @author Sylicium
  * @date 09/08/2023
- * @version 1.7.0
+ * @version 1.7.1
  * @github https://github.com/Sylicium/zone-telechargement-api/
  */
 
@@ -12,14 +12,13 @@ const cheerio = require("cheerio");
 var somef = require('./someFunctions');
 
 class ZoneTelechargementParser {
-    constructor(devMode=false,timeStamp=false, axiosRequestTimeInBetween=300) {
+    constructor(devMode=false, axiosRequestTimeInBetween=300) {
         this._ZTBaseURL = `https://www.zone-telechargement.homes` 
         this._allCategories = [ "films", "series", "jeux", "musiques", "mangas", "ebooks", "autres-videos", "logiciels", "mobiles" ]
         this._lastAxiosRequestTimestamp = 0 // Do not edit this value. used as temp
         this._axiosRequestTimeInBetween = axiosRequestTimeInBetween // Default: 300 - In milliseconds. Minimum time to wait between each requests to the base URL. Low values can cause functions to crash due to HTPP error 520 from axios. (Or rate limit errors)
         this._devMode = devMode;
         this._devMode && console.log("ztParser: Dev mode enabled.")
-        this._timeStamp = timeStamp
     }
     
     _getBaseURL() { return this._ZTBaseURL }
@@ -53,13 +52,6 @@ class ZoneTelechargementParser {
     }
 
     async _getDOMElementFromURL(url) {
-        if (this._timeStamp){
-            console.log("========================================================")
-            console.log("A:",Date.now()-this._lastAxiosRequestTimestamp)
-            console.log("B:",this._axiosRequestTimeInBetween)
-            console.log("C:",this._axiosRequestTimeInBetween - (Date.now()-this._lastAxiosRequestTimestamp))
-            console.log("--------------------------------------------------------")
-        }
         if (Date.now() - this._lastAxiosRequestTimestamp < this._axiosRequestTimeInBetween) {
             await somef.sleep(this._axiosRequestTimeInBetween - (Date.now() - this._lastAxiosRequestTimestamp));
         }

@@ -9,5 +9,5 @@ jobs:
       - name: Get HTML
         run: |
           HTML_CONTENT=$(curl -v -s https://t.me/ZT_officiel)
-          echo "$HTML_CONTENT" > page.html
+          echo "HTML_CONTENT: $HTML_CONTENT"
         shell: bash

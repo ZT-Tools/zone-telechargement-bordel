@@ -1,0 +1,15 @@
+name: Get HTML from Web Page
+on:
+  workflow_dispatch:
+
+jobs:
+  get_html:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Get HTML
+        run: |
+          HTML_CONTENT=$(curl -s https://t.me/ZT_officiel)
+          echo "$HTML_CONTENT" > page.html

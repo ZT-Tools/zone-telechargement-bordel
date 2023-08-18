@@ -68,7 +68,7 @@ class ZoneTelechargementParser {
         const $ = await this._getDOMElementFromURL(payloadURL);
     
         const movieList_elements = $("#dle-content .cover_global");
-        const responseMovieList = [];
+        const responseMovieList = {};
     
         if (movieList_elements.length === 0) {
             return responseMovieList;
@@ -81,11 +81,10 @@ class ZoneTelechargementParser {
             const the_url = this._getBaseURL() + titleAnchor.attr("href");
     
             const detail_release = elem.find(".cover_infos_global .detail_release");
-
+    
             const publishDate = new Date(elem.find("time").text());
     
             const movieDatas = {
-                title: titleAnchor.text(),
                 url: the_url,
                 id: the_url.match(/[?&]id=[0-9]{1,5}\-/gmi)[0].match(/\d+/)[0],
                 image: this._getBaseURL() + elem.find("img").attr("src"),
@@ -94,11 +93,17 @@ class ZoneTelechargementParser {
                 publishedOn: publishDate,
                 publishedTimestamp: publishDate.getTime(),
             };
-            responseMovieList.push(movieDatas);
+
+            const title = titleAnchor.text();
+            if (!responseMovieList[title]) {
+                responseMovieList[title] = [];
+            }
+            responseMovieList[title].push(movieDatas);
         });
     
         return responseMovieList;
     }
+    
 
     async _theMovieDbAutenfication() {
         try {
@@ -159,25 +164,31 @@ class ZoneTelechargementParser {
 
     async searchAll(category, query) {
         try {
-            let responseMovieList = []
-            let tempMovieList = false
-            let searchPage = 0
-            while(tempMovieList.length != 0) {
-                searchPage++
-                tempMovieList = await this._parseMoviesFromSearchQuery(category, query, searchPage)
-                responseMovieList = responseMovieList.concat(tempMovieList)
-                console.log(`Added ${tempMovieList.length} movies from page ${searchPage}`)
-            }
-            return responseMovieList
-        } catch(e) {
-            if(this._devMode) console.log(e)
+            let responseMovieList = {};
+            let tempMovieList = {};
+            let searchPage = 0;
+            do {
+                searchPage++;
+                tempMovieList = await this._parseMoviesFromSearchQuery(category, query, searchPage);
+                for (const [title, movies] of Object.entries(tempMovieList)) {
+                    if (!responseMovieList[title]) {
+                        responseMovieList[title] = [];
+                    }
+                    responseMovieList[title] = responseMovieList[title].concat(movies);
+                }
+                console.log(`Added ${Object.keys(tempMovieList).length} movies from page ${searchPage}`);
+            } while (Object.keys(tempMovieList).length !== 0);
+            return responseMovieList;
+        } catch (e) {
+            if (this._devMode) console.log(e);
             return {
                 status: false,
                 error: `${e}`,
                 stack: e.stack.split("\n"),
-            }
+            };
         }
     }
+    
 
     async search(category, query, page) {
         try {
